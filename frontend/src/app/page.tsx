@@ -5,31 +5,13 @@ import { gql, useQuery } from '@apollo/client';
 import { useEffect, useState } from "react";
 import { Button, Description, Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { AnimatePresence, motion } from 'framer-motion'
+import { GET_USERS } from "@/graphql/queries";
 
-export const GET_USERS = gql`
-  query getAllUsers {
-    users {
-      id
-      name
-    }
-  }
-`;
 
 export default function Home() {
   const { data, loading, error } = useQuery(GET_USERS);
   let [isOpen, setIsOpen] = useState(true)
-
-  function open() {
-    setIsOpen(true)
-  }
-
-  function close() {
-    setIsOpen(false)
-  }
   
-  useEffect(()=>{
-console.log(data)
-  },[loading])
   return (
     <>
     <button onClick={() => setIsOpen(true)}>Open dialog</button>
