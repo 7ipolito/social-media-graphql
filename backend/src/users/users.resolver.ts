@@ -1,21 +1,13 @@
 import { Query, Resolver } from '@nestjs/graphql';
 import { User } from './users.schema';
-
-export interface UserModel {
-  id: number;
-  name: string;
-}
+import { UserService } from './users.service';
 
 @Resolver(() => User)
 export class UserResolver {
+  constructor(private readonly userService: UserService) {}
+
   @Query(() => [User], { name: 'users' }) //name set instead of getAllBooks it's now books
-  getAllBooks() {
-    const arr: UserModel[] = [
-      {
-        id: 1,
-        name: 'Allan',
-      },
-    ];
-    return arr;
+  findAll() {
+    return this.userService.findAll();
   }
 }
