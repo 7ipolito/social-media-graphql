@@ -14,7 +14,7 @@ import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin
   imports: [
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      playground: false, //make it false for the productions
+      playground: false,
       autoSchemaFile: join(process.cwd(), 'src/schema.graphql'),
       //ts-morph
       definitions: {
