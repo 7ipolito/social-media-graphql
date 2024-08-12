@@ -23,6 +23,9 @@ export class UserService {
 
   async validateUser(username: string, password: string): Promise<User | null> {
     const user = await this.userModel.findOne({ username });
+    if (!user) {
+      throw new NotFoundException('Invalid credentials');
+    }
     console.log(password);
     if (await bcrypt.compare(password, user.password)) {
       return user;
@@ -43,11 +46,11 @@ export class UserService {
   async createUser(data: RegisterInput): Promise<User> {
     const { email, confirmPassword, password, username } = data;
 
-    if (!this.verifyEmailExists) {
+    if (!this.verifyEmailExists(email)) {
       throw new Error('Email already registered.');
     }
 
-    if (!this.verifyUsernameExists) {
+    if (!this.verifyUsernameExists(username)) {
       throw new Error('Username already registered.');
     }
 

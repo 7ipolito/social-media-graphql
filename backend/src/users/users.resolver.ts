@@ -13,7 +13,7 @@ export class UserResolver {
     @Args('loginInput') loginInput: LoginInput,
   ): Promise<LoginResponse> {
     const user = await this.userService.login(loginInput);
-    return { user }; // Retorne um objeto LoginResponse
+    return { user };
   }
 
   @Mutation(() => RegisterResponse)
@@ -21,6 +21,6 @@ export class UserResolver {
     @Args('registerInput') registerInput: RegisterInput,
   ): Promise<LoginResponse> {
     const user = await this.userService.createUser(registerInput);
-    return { user }; // Retorne um objeto LoginResponse
+    return { user };
   }
 }
