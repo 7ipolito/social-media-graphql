@@ -13,8 +13,16 @@ export interface User {
     name: string;
 }
 
+export interface Post {
+    id: string;
+    body: string;
+    username: string;
+    createdAt: string;
+}
+
 export interface IQuery {
     users(): User[] | Promise<User[]>;
+    posts(): Post[] | Promise<Post[]>;
 }
 
 type Nullable<T> = T | null;

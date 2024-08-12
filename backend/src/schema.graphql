@@ -7,6 +7,14 @@ type User {
   name: String!
 }
 
+type Post {
+  id: ID!
+  body: String!
+  username: String!
+  createdAt: String!
+}
+
 type Query {
   users: [User!]!
+  posts: [Post!]!
 }
