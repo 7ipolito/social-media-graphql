@@ -3,8 +3,24 @@
 # ------------------------------------------------------
 
 type User {
-  id: ID!
-  name: String!
+  _id: ID!
+  username: String!
+  email: String!
+  createdAt: DateTime!
+  token: String!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type LoginResponse {
+  user: User!
+}
+
+type RegisterResponse {
+  user: User!
 }
 
 type Post {
@@ -15,6 +31,22 @@ type Post {
 }
 
 type Query {
-  users: [User!]!
   posts: [Post!]!
+}
+
+type Mutation {
+  login(loginInput: LoginInput!): LoginResponse!
+  register(registerInput: RegisterInput!): RegisterResponse!
+}
+
+input LoginInput {
+  username: String!
+  password: String!
+}
+
+input RegisterInput {
+  username: String!
+  password: String!
+  confirmPassword: String!
+  email: String!
 }

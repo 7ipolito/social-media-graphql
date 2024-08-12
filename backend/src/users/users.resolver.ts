@@ -1,13 +1,26 @@
-import { Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { User } from './users.schema';
 import { UserService } from './users.service';
+import { LoginInput, LoginResponse } from './dtos/login.dto';
+import { RegisterInput, RegisterResponse } from './dtos/register-user.dto';
 
 @Resolver(() => User)
 export class UserResolver {
   constructor(private readonly userService: UserService) {}
 
-  @Query(() => [User], { name: 'users' }) //name set instead of getAllBooks it's now books
-  findAll() {
-    return this.userService.findAll();
+  @Mutation(() => LoginResponse)
+  async login(
+    @Args('loginInput') loginInput: LoginInput,
+  ): Promise<LoginResponse> {
+    const user = await this.userService.login(loginInput);
+    return { user }; // Retorne um objeto LoginResponse
+  }
+
+  @Mutation(() => RegisterResponse)
+  async register(
+    @Args('registerInput') registerInput: RegisterInput,
+  ): Promise<LoginResponse> {
+    const user = await this.userService.createUser(registerInput);
+    return { user }; // Retorne um objeto LoginResponse
   }
 }
