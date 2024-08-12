@@ -6,6 +6,7 @@ import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin
 import { MongooseModule, MongooseModuleOptions } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UsersModule } from './users/users.module';
+import { PostsModule } from './posts/posts.module';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { UsersModule } from './users/users.module';
       plugins: [ApolloServerPluginLandingPageLocalDefault()],
     }),
     UsersModule,
+    PostsModule,
   ],
 })
 export class AppModule {}

@@ -1,9 +1,16 @@
-type Query{
-  users:[User!]
+type Mutation {
+  login(username: String!, password: String!): LoginResponse!
 }
 
-type User{
-  id: Int
-  name: String
+type User {
+  id: ID!
+  username: String!
+  email: String!
+  createdAt: String!
+  token: String
 }
 
+type LoginResponse {
+  user: User!
+  accessToken: String!
+}
