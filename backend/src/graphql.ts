@@ -28,19 +28,19 @@ export interface User {
     token: string;
 }
 
+export interface Post {
+    id: string;
+    body: string;
+    username: string;
+    createdAt: string;
+}
+
 export interface LoginResponse {
     user: User;
 }
 
 export interface RegisterResponse {
     user: User;
-}
-
-export interface Post {
-    id: string;
-    body: string;
-    username: string;
-    createdAt: string;
 }
 
 export interface IQuery {

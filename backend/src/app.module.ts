@@ -7,10 +7,16 @@ import { MongooseModule, MongooseModuleOptions } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UsersModule } from './users/users.module';
 import { PostsModule } from './posts/posts.module';
+import { LoginModule } from './login/login.module';
+import { RegisterModule } from './register/register.module';
+import { LogoutModule } from './logout/logout.module';
+import Redis from 'ioredis';
+
+const redisClient = new Redis();
 
 @Module({
   imports: [
-    ConfigModule.forRoot(), // Carrega as variáveis de ambiente
+    ConfigModule.forRoot(),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -36,9 +42,18 @@ import { PostsModule } from './posts/posts.module';
         path: join(process.cwd(), 'src/graphql.ts'),
       },
       plugins: [ApolloServerPluginLandingPageLocalDefault()],
+      context: ({ req, res }) => ({
+        req,
+        res,
+        redis: redisClient,
+        session: req.session,
+      }),
     }),
     UsersModule,
     PostsModule,
+    LoginModule,
+    RegisterModule,
+    LogoutModule,
   ],
 })
 export class AppModule {}
