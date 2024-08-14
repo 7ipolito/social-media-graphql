@@ -11,7 +11,7 @@ export class RegisterResolver {
   async register(
     @Args('registerInput') registerInput: RegisterInput,
   ): Promise<RegisterResponse> {
-    const user = await this.registerService.createUser(registerInput);
-    return { user };
+    const error = await this.registerService.createUser(registerInput);
+    return { error };
   }
 }

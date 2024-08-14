@@ -11,7 +11,7 @@ export class LoginResolver {
   async login(
     @Args('loginInput') loginInput: LoginInput,
   ): Promise<LoginResponse> {
-    const user = await this.loginService.login(loginInput);
-    return { user };
+    const error = await this.loginService.login(loginInput);
+    return { error };
   }
 }

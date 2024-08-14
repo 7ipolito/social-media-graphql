@@ -4,6 +4,27 @@ import { Model } from 'mongoose';
 import { UserDocument } from 'src/users/entities/user.entity';
 import { User } from 'src/users/users.schema';
 import { RegisterInput } from './dtos/register-user.dto';
+import * as yup from 'yup';
+import {
+  duplicate,
+  emailNotLongEnough,
+  invalidEmail,
+  invalidUsername,
+  passwordNotLongEnough,
+} from './errorMessages';
+import { formatYupError } from 'src/utils/formatYupError';
+
+const schema = yup.object().shape({
+  username: yup.string().min(3, emailNotLongEnough).max(255),
+  email: yup.string().min(3, emailNotLongEnough).max(255).email(invalidEmail),
+  password: yup.string().min(3, passwordNotLongEnough).max(255),
+  confirmPassword: yup.string().min(3, passwordNotLongEnough).max(255),
+});
+
+export interface IError {
+  path: string;
+  message: string;
+}
 
 @Injectable()
 export class RegisterService {
@@ -20,27 +41,46 @@ export class RegisterService {
     return (await this.userModel.findOne({ username })) ? true : false;
   }
 
-  async createUser(data: RegisterInput): Promise<User> {
+  async createUser(data: RegisterInput): Promise<IError[] | null> {
     const { email, confirmPassword, password, username } = data;
-
+    try {
+      await schema.validate(data, { abortEarly: false });
+    } catch (err: any) {
+      return formatYupError(err);
+    }
     if (this.verifyEmailExists(email)) {
-      throw new Error('Email already registered.');
+      return [
+        {
+          path: 'email',
+          message: duplicate,
+        },
+      ];
     }
 
     if (this.verifyUsernameExists(username)) {
-      throw new Error('Username already registered.');
+      return [
+        {
+          path: 'username',
+          message: invalidUsername,
+        },
+      ];
     }
 
     if (password !== confirmPassword) {
-      throw new Error('The passwords are not the same.');
+      return [
+        {
+          path: 'password',
+          message: password,
+        },
+      ];
     }
 
-    const userCreated = await this.userModel.create({
+    await this.userModel.create({
       email,
       password,
       username,
     });
 
-    return userCreated;
+    return null;
   }
 }

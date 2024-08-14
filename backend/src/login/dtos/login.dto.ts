@@ -1,5 +1,5 @@
 import { InputType, Field, ObjectType } from '@nestjs/graphql';
-import { User } from 'src/users/users.schema';
+import { ErrorType } from 'src/register/dtos/register-user.dto';
 
 @InputType()
 export class LoginInput {
@@ -12,6 +12,6 @@ export class LoginInput {
 
 @ObjectType()
 export class LoginResponse {
-  @Field(() => User)
-  user: User;
+  @Field(() => [ErrorType], { nullable: true })
+  error?: ErrorType[];
 }
