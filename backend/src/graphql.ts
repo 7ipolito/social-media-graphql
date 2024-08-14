@@ -47,6 +47,7 @@ export interface IQuery {
 export interface IMutation {
     login(loginInput: LoginInput): LoginResponse | Promise<LoginResponse>;
     register(registerInput: RegisterInput): RegisterResponse | Promise<RegisterResponse>;
+    logout(): boolean | Promise<boolean>;
 }
 
 type Nullable<T> = T | null;

@@ -9,9 +9,8 @@ import { UsersModule } from './modules/users/users.module';
 import { PostsModule } from './modules/posts/posts.module';
 import { LoginModule } from './modules/login/login.module';
 import { RegisterModule } from './modules/register/register.module';
-import { LogoutModule } from './modules/logout/logout.module';
-import Redis from 'ioredis';
 import { redis } from './redis';
+import { LogoutModule } from './modules/logout/logout.module';
 
 @Module({
   imports: [

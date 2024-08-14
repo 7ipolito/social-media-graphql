@@ -6,6 +6,7 @@ import * as bcrypt from 'bcryptjs';
 import { UserDocument } from 'src/modules/users/entities/user.entity';
 import { User } from 'src/modules/users/users.schema';
 import { Session } from 'express-session';
+import { userSessionIdPrefix } from 'src/utils/constants';
 
 export interface IError {
   path: string;
@@ -46,8 +47,8 @@ export class LoginService {
         },
       ];
     }
-    console.log(session);
     session.userId = String(user._id);
+
     await new Promise((resolve, reject) => {
       session.save((err) => {
         if (err) {
@@ -58,6 +59,9 @@ export class LoginService {
       });
     });
 
+    if (req.sessionID) {
+      await redis.lpush(`${userSessionIdPrefix}${user._id}`, req.sessionID);
+    }
     return null;
   }
 }

@@ -4,6 +4,7 @@ import { ConfigService } from '@nestjs/config';
 import * as session from 'express-session';
 import RedisStore from 'connect-redis';
 import { redis } from './redis';
+import { redisSessionPrefix } from './utils/constants';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -19,7 +20,7 @@ async function bootstrap() {
     session({
       store: new RedisStore({
         client: redis,
-        prefix: 'sess:', // Prefixo para chaves de sessão
+        prefix: redisSessionPrefix, // Prefixo para chaves de sessão
       }),
       name: 'qid', // Nome do cookie de sessão
       secret: 'your-session-secret', // Substitua pelo seu segredo de sessão
