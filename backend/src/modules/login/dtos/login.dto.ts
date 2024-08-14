@@ -1,5 +1,5 @@
 import { InputType, Field, ObjectType } from '@nestjs/graphql';
-import { ErrorType } from 'src/register/dtos/register-user.dto';
+import { ErrorType } from 'src/modules/register/dtos/register-user.dto';
 
 @InputType()
 export class LoginInput {

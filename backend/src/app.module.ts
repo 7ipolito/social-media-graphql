@@ -5,18 +5,17 @@ import { join } from 'path';
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 import { MongooseModule, MongooseModuleOptions } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { UsersModule } from './users/users.module';
-import { PostsModule } from './posts/posts.module';
-import { LoginModule } from './login/login.module';
-import { RegisterModule } from './register/register.module';
-import { LogoutModule } from './logout/logout.module';
+import { UsersModule } from './modules/users/users.module';
+import { PostsModule } from './modules/posts/posts.module';
+import { LoginModule } from './modules/login/login.module';
+import { RegisterModule } from './modules/register/register.module';
+import { LogoutModule } from './modules/logout/logout.module';
 import Redis from 'ioredis';
-
-const redisClient = new Redis();
+import { redis } from './redis';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot(), // Carrega as variáveis de ambiente
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -34,7 +33,7 @@ const redisClient = new Redis();
         };
       },
     }),
-    GraphQLModule.forRoot<ApolloDriverConfig>({
+    GraphQLModule.forRoot({
       driver: ApolloDriver,
       playground: false,
       autoSchemaFile: join(process.cwd(), 'src/schema.graphql'),
@@ -42,12 +41,14 @@ const redisClient = new Redis();
         path: join(process.cwd(), 'src/graphql.ts'),
       },
       plugins: [ApolloServerPluginLandingPageLocalDefault()],
-      context: ({ req, res }) => ({
-        req,
-        res,
-        redis: redisClient,
-        session: req.session,
-      }),
+      context: ({ req }) => {
+        return {
+          redis,
+          req,
+          url: `${req.protocol}://${req.get('host')}`,
+          session: req.session,
+        };
+      },
     }),
     UsersModule,
     PostsModule,

@@ -1,10 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { LoginInput } from './dtos/login.dto';
 import * as bcrypt from 'bcryptjs';
-import { UserDocument } from 'src/users/entities/user.entity';
-import { User } from 'src/users/users.schema';
+import { UserDocument } from 'src/modules/users/entities/user.entity';
+import { User } from 'src/modules/users/users.schema';
+import { Session } from 'express-session';
 
 export interface IError {
   path: string;
@@ -29,7 +30,12 @@ export class LoginService {
     return null;
   }
 
-  async login(loginInput: LoginInput): Promise<null | IError[]> {
+  async login(
+    loginInput: LoginInput,
+    session: Session,
+    redis: any,
+    req: any,
+  ): Promise<null | IError[]> {
     const { username, password } = loginInput;
     const user = await this.validateUser(username, password);
     if (!user) {
@@ -40,6 +46,18 @@ export class LoginService {
         },
       ];
     }
+    console.log(session);
+    session.userId = String(user._id);
+    await new Promise((resolve, reject) => {
+      session.save((err) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(null);
+        }
+      });
+    });
+
     return null;
   }
 }

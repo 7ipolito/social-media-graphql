@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { UserDocument } from 'src/users/entities/user.entity';
-import { User } from 'src/users/users.schema';
+import { UserDocument } from 'src/modules/users/entities/user.entity';
+import { User } from 'src/modules/users/users.schema';
 import { RegisterInput } from './dtos/register-user.dto';
 import * as yup from 'yup';
 import {

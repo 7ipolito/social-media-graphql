@@ -1,5 +1,5 @@
 import { InputType, Field, ObjectType } from '@nestjs/graphql';
-import { IError } from 'src/login/login.service';
+import { IError } from 'src/modules/login/login.service';
 
 @InputType()
 export class RegisterInput {
