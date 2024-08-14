@@ -1,7 +1,7 @@
 import { ObjectType, Field, ID } from '@nestjs/graphql';
 import mongoose, { Document, Schema as MongooSchema } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Post } from 'src/posts/entities/post.entity';
+import { Post } from 'src/modules/posts/entities/post.entity';
 import * as bcrypt from 'bcryptjs';
 
 @ObjectType()

@@ -2,32 +2,24 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type User {
-  _id: ID!
-  username: String!
-  email: String!
-  createdAt: DateTime!
-  token: String!
-}
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
-
-type LoginResponse {
-  user: User!
-}
-
-type RegisterResponse {
-  user: User!
-}
-
 type Post {
   id: ID!
   body: String!
   username: String!
   createdAt: String!
+}
+
+type ErrorType {
+  path: String!
+  message: String!
+}
+
+type RegisterResponse {
+  error: [ErrorType!]
+}
+
+type LoginResponse {
+  error: [ErrorType!]
 }
 
 type Query {
@@ -37,6 +29,7 @@ type Query {
 type Mutation {
   login(loginInput: LoginInput!): LoginResponse!
   register(registerInput: RegisterInput!): RegisterResponse!
+  logout: Boolean!
 }
 
 input LoginInput {

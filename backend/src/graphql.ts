@@ -20,27 +20,24 @@ export interface RegisterInput {
     email: string;
 }
 
-export interface User {
-    _id: string;
-    username: string;
-    email: string;
-    createdAt: DateTime;
-    token: string;
-}
-
-export interface LoginResponse {
-    user: User;
-}
-
-export interface RegisterResponse {
-    user: User;
-}
-
 export interface Post {
     id: string;
     body: string;
     username: string;
     createdAt: string;
+}
+
+export interface ErrorType {
+    path: string;
+    message: string;
+}
+
+export interface RegisterResponse {
+    error?: Nullable<ErrorType[]>;
+}
+
+export interface LoginResponse {
+    error?: Nullable<ErrorType[]>;
 }
 
 export interface IQuery {
@@ -50,7 +47,7 @@ export interface IQuery {
 export interface IMutation {
     login(loginInput: LoginInput): LoginResponse | Promise<LoginResponse>;
     register(registerInput: RegisterInput): RegisterResponse | Promise<RegisterResponse>;
+    logout(): boolean | Promise<boolean>;
 }
 
-export type DateTime = any;
 type Nullable<T> = T | null;

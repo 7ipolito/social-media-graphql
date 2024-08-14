@@ -5,8 +5,12 @@ import { join } from 'path';
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 import { MongooseModule, MongooseModuleOptions } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { UsersModule } from './users/users.module';
-import { PostsModule } from './posts/posts.module';
+import { UsersModule } from './modules/users/users.module';
+import { PostsModule } from './modules/posts/posts.module';
+import { LoginModule } from './modules/login/login.module';
+import { RegisterModule } from './modules/register/register.module';
+import { redis } from './redis';
+import { LogoutModule } from './modules/logout/logout.module';
 
 @Module({
   imports: [
@@ -28,7 +32,7 @@ import { PostsModule } from './posts/posts.module';
         };
       },
     }),
-    GraphQLModule.forRoot<ApolloDriverConfig>({
+    GraphQLModule.forRoot({
       driver: ApolloDriver,
       playground: false,
       autoSchemaFile: join(process.cwd(), 'src/schema.graphql'),
@@ -36,9 +40,20 @@ import { PostsModule } from './posts/posts.module';
         path: join(process.cwd(), 'src/graphql.ts'),
       },
       plugins: [ApolloServerPluginLandingPageLocalDefault()],
+      context: ({ req }) => {
+        return {
+          redis,
+          req,
+          url: `${req.protocol}://${req.get('host')}`,
+          session: req.session,
+        };
+      },
     }),
     UsersModule,
     PostsModule,
+    LoginModule,
+    RegisterModule,
+    LogoutModule,
   ],
 })
 export class AppModule {}
