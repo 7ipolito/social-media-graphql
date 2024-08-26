@@ -1,43 +1,32 @@
-// pages/index.jsx
-'use client';
-
-import React, { useState } from 'react';
-import { Button, Input, Transition } from '@headlessui/react';
-import Animation from '@/components/Animation';
-import Field from '@/components/Field';
-import CreateLoginFieldSet from '@/components/CreateAccountForm';
-import LoginForm from '@/components/LoginForm';
+// app/page.jsx (ou app/page.tsx se estiver usando TypeScript)
+'use client'
+import { cookies } from 'next/headers';
+import Login from './(auth)/login';
+import { useQuery } from '@apollo/client';
+import { GET_WHOAMI } from '@/graphql/queries';
+import Dashboard from './dashboard/page';
+import { useEffect, useRef } from 'react';
+import { useRouter } from 'next/navigation';
+import Animation  from "../components/Animation"
+import toast, { Toaster } from 'react-hot-toast';
 
 export default function Home() {
-  const [openFieldSet, setOpenFieldSet] = useState(false);
+  const router = useRouter();
+  const hasShownToast = useRef(false); // Referência para controlar se o toast já foi exibido
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams(window.location.search);
+    if (queryParams.get('error') === 'disconnected' && !hasShownToast.current) {
+      hasShownToast.current = true; // Marca que o toast já foi exibido
+      toast.error('Sorry, you were disconnected'); // Mostra a notificação
+    }
+  }, [router]);
 
   return (
-    <div className="flex flex-col flex-1 items-center w-full h-screen bg-indigo-800">
-      <Animation />
-      {openFieldSet ?(
-        <CreateLoginFieldSet />
-      ):(
-     
-         <LoginForm/>
-       )}
-      {!openFieldSet?(
-        <div>
-        <p className="text-gray-200 mt-2">
-          No account?{' '}
-          <span
-            className="text-green-700 cursor-pointer hover:text-green-800"
-            onClick={() => setOpenFieldSet(true)}
-          >
-            Create one
-          </span>
-        </p>
-      </div>):(
-          <div>
-            <p  onClick={() => setOpenFieldSet(false)} className="text-gray-200 mt-2 hover:text-green-700 cursor-pointer">
-              Back to login page
-            </p>
-          </div>
-      )}
+    <div className="flex flex-col flex-1 items-center w-full h-screen bg-primary">
+       <Toaster />
+      <Login/>
+   
     </div>
   );
 }

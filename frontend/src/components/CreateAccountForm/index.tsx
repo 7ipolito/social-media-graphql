@@ -36,7 +36,7 @@ const CreateAccountForm = () => {
   };
 
   return (
-    <div className="transition duration-300 ease-in data-[closed]:opacity-0 w-full max-w-lg px-4">
+    <div className="transition duration-300 ease-in data-[closed]:opacity-0  w-[45vh] lg:w-[512px] max-w-lg ">
       <Fieldset legend="Create an account">
         <Field label="Email" description="Use your better email">
           <Input

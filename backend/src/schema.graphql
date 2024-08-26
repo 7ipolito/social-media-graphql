@@ -2,13 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Post {
-  id: ID!
-  body: String!
-  username: String!
-  createdAt: String!
-}
-
 type ErrorType {
   path: String!
   message: String!
@@ -18,11 +11,24 @@ type RegisterResponse {
   error: [ErrorType!]
 }
 
+type UsersResponse {
+  error: [ErrorType!]
+  userId: String
+}
+
+type Post {
+  id: ID!
+  body: String!
+  username: String!
+  createdAt: String!
+}
+
 type LoginResponse {
   error: [ErrorType!]
 }
 
 type Query {
+  whoami: UsersResponse!
   posts: [Post!]!
 }
 

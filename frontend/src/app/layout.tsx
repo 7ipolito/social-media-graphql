@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ApolloProvider } from "@apollo/client";
 import client from "@/lib/client";
+import Head from "next/head";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,6 +20,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <Head>
+        <link rel="icon" href="/favicon.ico" />
+        {/* Outros metadados podem ser adicionados aqui */}
+      </Head>
       <body >
         <ApolloProvider client={client}>
         {children}

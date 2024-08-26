@@ -20,13 +20,6 @@ export interface RegisterInput {
     email: string;
 }
 
-export interface Post {
-    id: string;
-    body: string;
-    username: string;
-    createdAt: string;
-}
-
 export interface ErrorType {
     path: string;
     message: string;
@@ -36,11 +29,24 @@ export interface RegisterResponse {
     error?: Nullable<ErrorType[]>;
 }
 
+export interface UsersResponse {
+    error?: Nullable<ErrorType[]>;
+    userId?: Nullable<string>;
+}
+
+export interface Post {
+    id: string;
+    body: string;
+    username: string;
+    createdAt: string;
+}
+
 export interface LoginResponse {
     error?: Nullable<ErrorType[]>;
 }
 
 export interface IQuery {
+    whoami(): UsersResponse | Promise<UsersResponse>;
     posts(): Post[] | Promise<Post[]>;
 }
 
