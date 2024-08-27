@@ -5,16 +5,13 @@ import { GET_WHOAMI } from '@/graphql/queries';
 import { LOGOUT } from '@/graphql/mutations';
 import client from '@/lib/client';
 import { NextResponse, type NextRequest } from 'next/server';
-import { cookies } from 'next/headers';
 import {  getFormattedCookie } from '@/utils/cookies';
-
+import LogoutButton from '@/components/LogoutButton';
 
 
 // Função para buscar dados do servidor
 async function fetchData() {
   try {
-  
-
     const { data } = await client.query({
       query: GET_WHOAMI,
       context: {
@@ -24,17 +21,26 @@ async function fetchData() {
       },
       fetchPolicy: 'no-cache', // Garante que os dados sejam sempre buscados do servidor
     });
+   
 
-   const response = NextResponse.next();
-response.cookies.delete('qid');
     if (data.whoami.error) {
-
+      // const response = await fetch('http://localhost:3000/api/logout', {
+      //   method: 'GET',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //     'Cookie': String(getFormattedCookie('qid')), // Adicione o cookie aqui
+      //   },
+      //   credentials: 'include', // Inclui cookies na requisição
+      // });
+      
+      // console.log(await response.json()); // Para ver a resposta da API
       throw new Error(data.whoami.error[0].message);
     }
 
     return data.whoami.userId || null;
   } catch (error) {
     console.error('Erro ao buscar dados do servidor:', error);
+   
     return null;
   }
 }
@@ -64,9 +70,7 @@ export default async function Dashboard() {
       ) : (
         <>
           <p className='text-white'>Your userId is {userId}</p>
-          <button className='bg-red-500' >
-            Logout
-          </button>
+          <LogoutButton/>
         </>
       )}
     </div>
