@@ -14,11 +14,10 @@ export const LOGIN = gql`
 export const CREATE_USER = gql`
   mutation CreateAccount($username: String!, $password: String!, $confirmPassword: String!, $email: String!) {
     register(registerInput: { username: $username, password: $password, confirmPassword: $confirmPassword, email: $email }) {
-      user {
-        _id
-        username
-        email
-      }
+      error {
+        message
+        path
+    }
 
     }
   }

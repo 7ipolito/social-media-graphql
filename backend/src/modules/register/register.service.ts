@@ -11,6 +11,7 @@ import {
   invalidEmail,
   invalidUsername,
   passwordNotLongEnough,
+  passwordNotMatch,
 } from './errorMessages';
 import { formatYupError } from 'src/utils/formatYupError';
 
@@ -34,11 +35,11 @@ export class RegisterService {
   ) {}
 
   async verifyEmailExists(email: string): Promise<boolean> {
-    return (await this.userModel.findOne({ email })) ? true : false;
+    return (await this.userModel.findOne({ email })) !== null ? true : false;
   }
 
   async verifyUsernameExists(username: string): Promise<boolean> {
-    return (await this.userModel.findOne({ username })) ? true : false;
+    return (await this.userModel.findOne({ username })) !== null ? true : false;
   }
 
   async createUser(data: RegisterInput): Promise<IError[] | null> {
@@ -48,7 +49,8 @@ export class RegisterService {
     } catch (err: any) {
       return formatYupError(err);
     }
-    if (this.verifyEmailExists(email)) {
+
+    if (await this.verifyEmailExists(email)) {
       return [
         {
           path: 'email',
@@ -57,11 +59,11 @@ export class RegisterService {
       ];
     }
 
-    if (this.verifyUsernameExists(username)) {
+    if (await this.verifyUsernameExists(username)) {
       return [
         {
           path: 'username',
-          message: invalidUsername,
+          message: duplicate,
         },
       ];
     }
@@ -70,7 +72,7 @@ export class RegisterService {
       return [
         {
           path: 'password',
-          message: password,
+          message: passwordNotMatch,
         },
       ];
     }
