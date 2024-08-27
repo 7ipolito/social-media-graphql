@@ -23,8 +23,6 @@ export class LoginResolver {
     @Args('loginInput') loginInput: LoginInput,
     @Context() context: GraphQLContext, // Use o decorador @Context para obter o contexto
   ): Promise<LoginResponse> {
-    console.log('Context:', context.req.session);
-
     const error = await this.loginService.login(
       loginInput,
       context.req.session,

@@ -1,4 +1,3 @@
-'use client';
 
 import React, { useState } from 'react';
 import { Button, Input } from '@headlessui/react';
@@ -7,10 +6,17 @@ import { useMutation } from '@apollo/client';
 import { LOGIN } from '@/graphql/mutations';
 import { useRouter } from 'next/navigation';
 
+export interface IErrorAuth{
+  path:string;
+  message:string;
+}
+
 const LoginForm = () => {
   const router = useRouter()
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [errorAuth, setErrorAuth] = useState<IErrorAuth>();
+
   const [login, { data, loading, error }] = useMutation(LOGIN);
 
   const handleLogin = async () => {
@@ -21,19 +27,20 @@ const LoginForm = () => {
           password,
         },
       });
-      alert('Hello, '+response.data.login.user.username)
+      if(response.data.login.error){
+        setErrorAuth(response.data.login.error[0])
+        throw new Error(response.data.login.error[0])
+      }
+      console.log(response)
       router.push('/dashboard')
-      // if (response.data.login.token) {
-      //   localStorage.setItem('token', response.data.login.username);
-        
-      // }
+     
     } catch (err) {
-      console.error('Erro no login', err);
+      console.error(err);
     }
   };
 
   return (
-    <div className="transition duration-300 ease-in data-[closed]:opacity-0 w-full max-w-80">
+    <div className="transition duration-300 ease-in data-[closed]:opacity-0 w-96 max-w-96 ">
       <Field label="Username">
         <Input
           value={username}
@@ -57,6 +64,7 @@ const LoginForm = () => {
         {loading ? 'Loading...' : 'Login'}
       </Button>
       {error && <p className="text-red-500 mt-2">{error.message}</p>}
+      {errorAuth && <p className="text-red-500 mt-2">{errorAuth?.message}</p>}
     </div>
   );
 };

@@ -1,13 +1,12 @@
 import React from 'react';
 import Lottie from 'lottie-react';
-import loadingAnimation from './loading.json';
 
 
-export default function Animation() {
+export default function Animation({animation,...rest }:any) {
 
   return (
-    <div className="flex items-center justify-center w-56">
-      <Lottie animationData={loadingAnimation}/>
+    <div className={`flex items-center justify-center`} {...rest}>
+      <Lottie animationData={animation}/>
     </div>
   );
 }

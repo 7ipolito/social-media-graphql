@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { LoginInput } from './dtos/login.dto';
@@ -58,6 +58,8 @@ export class LoginService {
         }
       });
     });
+
+    console.log(session);
 
     if (req.sessionID) {
       await redis.lpush(`${userSessionIdPrefix}${user._id}`, req.sessionID);

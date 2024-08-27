@@ -11,9 +11,11 @@ async function bootstrap() {
 
   app.enableCors({
     origin: true,
-    methods: 'GET',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    credentials: true,
     allowedHeaders: 'Content-Type, Authorization',
   });
+
   const configService = app.get(ConfigService);
 
   app.use(
@@ -29,7 +31,7 @@ async function bootstrap() {
       cookie: {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
-        maxAge: 1000 * 60 * 60 * 24 * 7, // 7 dias
+        maxAge: 1000 * 60 * 60 * 24 * 7,
       },
     }),
   );

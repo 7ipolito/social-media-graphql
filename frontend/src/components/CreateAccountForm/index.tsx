@@ -5,12 +5,15 @@ import Fieldset from '../FieldSet';
 import Field from '../Field';
 import { useMutation } from '@apollo/client';
 import { CREATE_USER } from '@/graphql/mutations';
+import { IErrorAuth } from '../LoginForm';
+import toast from 'react-hot-toast';
 
 const CreateAccountForm = () => {
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [errorAuth, setErrorAuth] = useState<IErrorAuth>();
 
   const [register, { data, loading, error }] = useMutation(CREATE_USER);
 
@@ -25,7 +28,11 @@ const CreateAccountForm = () => {
         },
       });
 
-      console.log(response)
+      if(response.data.register.error){
+        toast.error(`Error: ${response.data.register.error[0].path}`); // Mostra a notificação
+        setErrorAuth(response.data.register.error[0])
+        throw new Error(response.data.register.error[0])
+      }
       // if (response.data.register.token) {
       //   localStorage.setItem('token', response.data.register.username);
       //   console.log('Conta criada com sucesso', response.data.register.user);
@@ -36,7 +43,7 @@ const CreateAccountForm = () => {
   };
 
   return (
-    <div className="transition duration-300 ease-in data-[closed]:opacity-0 w-full max-w-lg px-4">
+    <div className="transition duration-300 ease-in data-[closed]:opacity-0  w-[45vh] lg:w-[512px] max-w-lg ">
       <Fieldset legend="Create an account">
         <Field label="Email" description="Use your better email">
           <Input
@@ -77,6 +84,8 @@ const CreateAccountForm = () => {
           {loading ? 'Creating account...' : 'Create account'}
         </Button>
         {error && <p className="text-red-500 mt-2">{error.message}</p>}
+        {errorAuth && <p className="text-red-500 mt-2">{errorAuth?.message}</p>}
+
       </Fieldset>
     </div>
   );
