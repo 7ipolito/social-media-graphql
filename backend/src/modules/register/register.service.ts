@@ -9,7 +9,6 @@ import {
   duplicate,
   emailNotLongEnough,
   invalidEmail,
-  invalidUsername,
   passwordNotLongEnough,
   passwordNotMatch,
 } from './errorMessages';
