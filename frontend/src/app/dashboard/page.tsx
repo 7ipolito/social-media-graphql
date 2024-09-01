@@ -12,6 +12,7 @@ import LogoutButton from '@/components/LogoutButton';
 // Função para buscar dados do servidor
 async function fetchData() {
   try {
+    console.log(getFormattedCookie('qid'))
     const { data } = await client.query({
       query: GET_WHOAMI,
       context: {
