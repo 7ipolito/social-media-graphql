@@ -7,6 +7,7 @@ export function getFormattedCookie(name:string){
     return `${cookieValue?.name}=${encodedValue}`;
     
   }catch(err){
+    console.log(err)
     return false
   }
  
