@@ -1,34 +1,16 @@
-// middleware.ts
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
-import { getFormattedCookie } from './utils/cookies';
+import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
 
-export async function middleware(request: NextRequest) {
-  try {
-    const url = request.nextUrl.clone(); 
+const isPublicRoute = createRouteMatcher(['/sign-in(.*)', '/sign-up(.*)','/api/webhooks(.*)'])
 
-    const cookieValue = getFormattedCookie('qid');
-    console.log(cookieValue)
-
-    if (cookieValue === false) {
-      if (url.pathname !== '/') {
-        url.pathname = '/';
-        return NextResponse.redirect(new URL('/?error=disconnected', request.url));
-      }
-    } else if (cookieValue) {
-      if (url.pathname !== '/dashboard') {
-        url.pathname = '/dashboard';
-        return NextResponse.redirect(new URL('/?error=disconnected', request.url));
-      }
-    }
-
-    return NextResponse.next();
-  } catch (error) {
-    console.error('Erro ao consultar a sessão:', error);
-    return NextResponse.redirect(new URL('/?error=disconnected', request.url));
+export default clerkMiddleware((auth, request) => {
+  if (!isPublicRoute(request)) {
+    auth().protect()
   }
-}
+})
 
 export const config = {
-  matcher: ['/dashboard', '/'], // Ajuste conforme necessário
-};
+  matcher: [
+    '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
+    '/(api|trpc)(.*)',
+  ],
+}
