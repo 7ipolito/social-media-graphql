@@ -1,16 +1,14 @@
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
-import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { ApolloDriver } from '@nestjs/apollo';
 import { join } from 'path';
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 import { MongooseModule, MongooseModuleOptions } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UsersModule } from './modules/users/users.module';
 import { PostsModule } from './modules/posts/posts.module';
-import { LoginModule } from './modules/login/login.module';
 import { RegisterModule } from './modules/register/register.module';
 import { redis } from './redis';
-import { LogoutModule } from './modules/logout/logout.module';
 
 @Module({
   imports: [
@@ -51,9 +49,7 @@ import { LogoutModule } from './modules/logout/logout.module';
     }),
     UsersModule,
     PostsModule,
-    LoginModule,
     RegisterModule,
-    LogoutModule,
   ],
 })
 export class AppModule {}

@@ -5,20 +5,12 @@ import { UserDocument } from 'src/modules/users/entities/user.entity';
 import { User } from 'src/modules/users/users.schema';
 import { RegisterInput } from './dtos/register-user.dto';
 import * as yup from 'yup';
-import {
-  duplicate,
-  emailNotLongEnough,
-  invalidEmail,
-  passwordNotLongEnough,
-  passwordNotMatch,
-} from './errorMessages';
+import { duplicate, emailNotLongEnough, invalidEmail } from './errorMessages';
 import { formatYupError } from 'src/utils/formatYupError';
 
 const schema = yup.object().shape({
-  username: yup.string().min(3, emailNotLongEnough).max(255),
+  clerkUserId: yup.string(),
   email: yup.string().min(3, emailNotLongEnough).max(255).email(invalidEmail),
-  password: yup.string().min(3, passwordNotLongEnough).max(255),
-  confirmPassword: yup.string().min(3, passwordNotLongEnough).max(255),
 });
 
 export interface IError {
@@ -42,7 +34,7 @@ export class RegisterService {
   }
 
   async createUser(data: RegisterInput): Promise<IError[] | null> {
-    const { email, confirmPassword, password, username } = data;
+    const { email, clerkUserId } = data;
     try {
       await schema.validate(data, { abortEarly: false });
     } catch (err: any) {
@@ -58,28 +50,9 @@ export class RegisterService {
       ];
     }
 
-    if (await this.verifyUsernameExists(username)) {
-      return [
-        {
-          path: 'username',
-          message: duplicate,
-        },
-      ];
-    }
-
-    if (password !== confirmPassword) {
-      return [
-        {
-          path: 'password',
-          message: passwordNotMatch,
-        },
-      ];
-    }
-
     await this.userModel.create({
       email,
-      password,
-      username,
+      clerkUserId,
     });
 
     return null;

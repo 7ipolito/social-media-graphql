@@ -23,29 +23,16 @@ type Post {
   createdAt: String!
 }
 
-type LoginResponse {
-  error: [ErrorType!]
-}
-
 type Query {
   whoami: UsersResponse!
   posts: [Post!]!
 }
 
 type Mutation {
-  login(loginInput: LoginInput!): LoginResponse!
   register(registerInput: RegisterInput!): RegisterResponse!
-  logout: Boolean!
-}
-
-input LoginInput {
-  username: String!
-  password: String!
 }
 
 input RegisterInput {
-  username: String!
-  password: String!
-  confirmPassword: String!
+  clerkUserId: String!
   email: String!
 }
