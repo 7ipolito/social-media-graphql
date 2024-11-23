@@ -8,16 +8,23 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export interface LoginInput {
-    username: string;
-    password: string;
+export interface RegisterInput {
+    clerkUserId: string;
+    email: string;
 }
 
-export interface RegisterInput {
+export interface User {
+    _id: string;
     username: string;
-    password: string;
-    confirmPassword: string;
     email: string;
+    createdAt: DateTime;
+}
+
+export interface Post {
+    id: string;
+    body: string;
+    username: string;
+    createdAt: string;
 }
 
 export interface ErrorType {
@@ -29,31 +36,14 @@ export interface RegisterResponse {
     error?: Nullable<ErrorType[]>;
 }
 
-export interface UsersResponse {
-    error?: Nullable<ErrorType[]>;
-    userId?: Nullable<string>;
-}
-
-export interface Post {
-    id: string;
-    body: string;
-    username: string;
-    createdAt: string;
-}
-
-export interface LoginResponse {
-    error?: Nullable<ErrorType[]>;
-}
-
 export interface IQuery {
-    whoami(): UsersResponse | Promise<UsersResponse>;
+    whoami(): User | Promise<User>;
     posts(): Post[] | Promise<Post[]>;
 }
 
 export interface IMutation {
-    login(loginInput: LoginInput): LoginResponse | Promise<LoginResponse>;
     register(registerInput: RegisterInput): RegisterResponse | Promise<RegisterResponse>;
-    logout(): boolean | Promise<boolean>;
 }
 
+export type DateTime = any;
 type Nullable<T> = T | null;

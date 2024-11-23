@@ -1,16 +1,10 @@
 import { InputType, Field, ObjectType } from '@nestjs/graphql';
-import { IError } from 'src/modules/login/login.service';
+import { IError } from '../register.service';
 
 @InputType()
 export class RegisterInput {
   @Field()
-  username: string;
-
-  @Field()
-  password: string;
-
-  @Field()
-  confirmPassword: string;
+  clerkUserId: string;
 
   @Field()
   email: string;

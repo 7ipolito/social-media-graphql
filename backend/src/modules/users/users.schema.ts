@@ -14,7 +14,4 @@ export class User {
 
   @Field()
   createdAt: Date;
-
-  @Field()
-  token: string;
 }

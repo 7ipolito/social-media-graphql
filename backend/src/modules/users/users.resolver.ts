@@ -1,30 +1,29 @@
 import { Resolver, Query, Context } from '@nestjs/graphql';
+import { ClerkGuard } from './guards/clerk.guard';
 import { User } from './users.schema';
 import { UserService } from './users.service';
-import { GraphQLContext } from '../login/login.resolver';
-import { IError } from '../login/login.service';
-import { UsersResponse } from './dtos/get-whoami.dto';
+import { UseGuards } from '@nestjs/common';
 
 @Resolver(() => User)
 export class UserResolver {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly usersService: UserService) {}
 
-  private isAuthenticated(session: any): boolean {
-    return session.userId !== undefined;
-  }
+  @Query(() => User)
+  @UseGuards(ClerkGuard)
+  async whoami(@Context() context: any): Promise<User> {
+    const userId = context.userId;
 
-  @Query(() => UsersResponse)
-  whoami(@Context() context: GraphQLContext): UsersResponse {
-    console.log(context.req.session);
-    if (!this.isAuthenticated(context.req.session)) {
-      const error: IError[] = [
-        {
-          path: 'users',
-          message: 'User not authenticated',
-        },
-      ];
-      return { error };
+    if (!userId) {
+      throw new Error('User ID not found in context');
     }
-    return { userId: context.req.session.userId };
+
+    const user = await this.usersService.getUser(userId);
+
+    if (!user) {
+      console.log(userId);
+      throw new Error('User not found');
+    }
+
+    return user;
   }
 }

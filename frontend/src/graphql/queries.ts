@@ -1,13 +1,9 @@
 import { gql } from "@apollo/client";
 
 export const GET_WHOAMI = gql`
- query{
+  query {
     whoami {
-      userId 
-      error {
-        message
-        path
-      }
+      email
     }
-}
+  }
 `;
