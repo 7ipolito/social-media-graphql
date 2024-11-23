@@ -1,20 +1,29 @@
-import { Resolver, Query } from '@nestjs/graphql';
+import { Resolver, Query, Context } from '@nestjs/graphql';
+import { ClerkGuard } from './guards/clerk.guard';
 import { User } from './users.schema';
 import { UserService } from './users.service';
-
-import { UsersResponse } from './dtos/get-whoami.dto';
-import { Req, UseGuards } from '@nestjs/common';
-import { ClerkGuard } from './guards/clerk.guard';
+import { UseGuards } from '@nestjs/common';
 
 @Resolver(() => User)
 export class UserResolver {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly usersService: UserService) {}
 
-  @Query(() => UsersResponse)
+  @Query(() => User)
   @UseGuards(ClerkGuard)
-  whoami(@Req() request: Request): UsersResponse {
-    const userId = request['userId'];
+  async whoami(@Context() context: any): Promise<User> {
+    const userId = context.userId;
 
-    return { userId };
+    if (!userId) {
+      throw new Error('User ID not found in context');
+    }
+
+    const user = await this.usersService.getUser(userId);
+
+    if (!user) {
+      console.log(userId);
+      throw new Error('User not found');
+    }
+
+    return user;
   }
 }

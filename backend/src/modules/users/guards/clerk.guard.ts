@@ -4,38 +4,40 @@ import {
   ExecutionContext,
   UnauthorizedException,
 } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import { Request } from 'express';
+import { GqlExecutionContext } from '@nestjs/graphql';
+import { verifyToken } from '@clerk/backend';
 
 @Injectable()
 export class ClerkGuard implements CanActivate {
-  constructor(private jwtService: JwtService) {}
-
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const request: Request = context.switchToHttp().getRequest();
-    const token = this.extractTokenFromHeader(request);
+    const ctx = GqlExecutionContext.create(context);
+    const request = ctx.getContext().req;
 
+    const token = this.extractTokenFromHeader(request);
     if (!token) {
       throw new UnauthorizedException('No token found');
     }
 
     try {
-      // Verifica o token utilizando o secret do Clerk
-      const decodedToken = this.jwtService.verify(token, {
-        secret: process.env.CLERK_JWT_SECRET,
+      const jwtKey = process.env.CLERK_JWT_KEY;
+      const verifiedToken = await verifyToken(token, {
+        jwtKey,
+        authorizedParties: ['http://localhost:3000', 'api.example.com'],
       });
 
-      // O ID do usuário está no campo "sub"
-      request['userId'] = decodedToken.sub;
-
+      ctx.getContext().userId = verifiedToken.sub;
       return true;
-    } catch (error) {
+    } catch (err) {
+      console.error('Token verification failed:', err);
       throw new UnauthorizedException('Invalid token');
     }
   }
 
-  private extractTokenFromHeader(request: Request): string | null {
-    const [type, token] = request.headers.authorization?.split(' ') ?? [];
+  private extractTokenFromHeader(request: any): string | null {
+    const authHeader = request.headers.authorization;
+    if (!authHeader) return null;
+
+    const [type, token] = authHeader.split(' ');
     return type === 'Bearer' ? token : null;
   }
 }
