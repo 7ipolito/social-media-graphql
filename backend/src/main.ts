@@ -1,10 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
-import * as session from 'express-session';
-import RedisStore from 'connect-redis';
-import { redis } from './redis';
-import { redisSessionPrefix } from './utils/constants';
+
 import { ExpressAdapter } from '@nestjs/platform-express';
 import * as express from 'express';
 
@@ -25,24 +22,6 @@ async function bootstrap() {
   });
 
   const configService = app.get(ConfigService);
-  app.use(
-    session({
-      store: new RedisStore({
-        client: redis,
-        prefix: redisSessionPrefix, // Prefixo para chaves de sessão
-      }),
-      name: 'qid', // Nome do cookie de sessão
-      secret: 'your-session-secret', // Substitua pelo seu segredo de sessão
-      resave: false,
-      saveUninitialized: false,
-      cookie: {
-        httpOnly: false,
-        secure: false,
-        sameSite: 'none',
-        maxAge: 1000 * 60 * 60 * 24 * 7,
-      },
-    }),
-  );
 
   const port = configService.get<number>('PORT') || 4000;
 

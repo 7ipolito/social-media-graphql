@@ -17,6 +17,10 @@ export class User {
   @Prop({ required: true })
   email: string;
 
+  @Field(() => String)
+  @Prop({ required: true })
+  username: string;
+
   @Field(() => Date)
   createdAt: Date;
 

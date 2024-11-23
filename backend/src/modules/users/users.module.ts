@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import { UserResolver } from './users.resolver';
 import { UserService } from './users.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from './entities/user.entity';
 import { JwtService } from '@nestjs/jwt';
+import { UserResolver } from './users.resolver';
 
 @Module({
   imports: [

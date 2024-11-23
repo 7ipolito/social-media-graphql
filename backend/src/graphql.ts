@@ -13,18 +13,11 @@ export interface RegisterInput {
     email: string;
 }
 
-export interface ErrorType {
-    path: string;
-    message: string;
-}
-
-export interface RegisterResponse {
-    error?: Nullable<ErrorType[]>;
-}
-
-export interface UsersResponse {
-    error?: Nullable<ErrorType[]>;
-    userId?: Nullable<string>;
+export interface User {
+    _id: string;
+    username: string;
+    email: string;
+    createdAt: DateTime;
 }
 
 export interface Post {
@@ -34,8 +27,17 @@ export interface Post {
     createdAt: string;
 }
 
+export interface ErrorType {
+    path: string;
+    message: string;
+}
+
+export interface RegisterResponse {
+    error?: Nullable<ErrorType[]>;
+}
+
 export interface IQuery {
-    whoami(): UsersResponse | Promise<UsersResponse>;
+    whoami(): User | Promise<User>;
     posts(): Post[] | Promise<Post[]>;
 }
 
@@ -43,4 +45,5 @@ export interface IMutation {
     register(registerInput: RegisterInput): RegisterResponse | Promise<RegisterResponse>;
 }
 
+export type DateTime = any;
 type Nullable<T> = T | null;

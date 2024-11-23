@@ -1,20 +1,19 @@
+import React, { useState } from "react";
+import { Button, Input } from "@headlessui/react";
+import Field from "../Field";
+import { useMutation } from "@apollo/client";
+import { LOGIN } from "@/graphql/mutations";
+import { useRouter } from "next/navigation";
 
-import React, { useState } from 'react';
-import { Button, Input } from '@headlessui/react';
-import Field from '../Field';
-import { useMutation } from '@apollo/client';
-import { LOGIN } from '@/graphql/mutations';
-import { useRouter } from 'next/navigation';
-
-export interface IErrorAuth{
-  path:string;
-  message:string;
+export interface IErrorAuth {
+  path: string;
+  message: string;
 }
 
 const LoginForm = () => {
-  const router = useRouter()
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const router = useRouter();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [errorAuth, setErrorAuth] = useState<IErrorAuth>();
 
   const [login, { data, loading, error }] = useMutation(LOGIN);
@@ -27,13 +26,11 @@ const LoginForm = () => {
           password,
         },
       });
-      if(response.data.login.error){
-        setErrorAuth(response.data.login.error[0])
-        throw new Error(response.data.login.error[0])
+      if (response.data.login.error) {
+        setErrorAuth(response.data.login.error[0]);
+        throw new Error(response.data.login.error[0]);
       }
-      console.log(response)
-      router.push('/dashboard')
-     
+      router.push("/dashboard");
     } catch (err) {
       console.error(err);
     }
@@ -61,7 +58,7 @@ const LoginForm = () => {
         disabled={loading}
         className="inline-flex items-center gap-2 mt-4 rounded-md bg-green-700 py-1.5 px-3 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-green-800 data-[open]:bg-gray-700 data-[focus]:outline-1 data-[focus]:outline-white"
       >
-        {loading ? 'Loading...' : 'Login'}
+        {loading ? "Loading..." : "Login"}
       </Button>
       {error && <p className="text-red-500 mt-2">{error.message}</p>}
       {errorAuth && <p className="text-red-500 mt-2">{errorAuth?.message}</p>}
