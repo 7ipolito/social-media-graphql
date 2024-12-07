@@ -18,7 +18,7 @@ export class User {
   email: string;
 
   @Field(() => String)
-  @Prop({ required: true })
+  @Prop()
   username: string;
 
   @Field(() => Date)
