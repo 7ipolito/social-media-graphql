@@ -1,22 +1,15 @@
-/* eslint-disable camelcase */
-
-// import { createUser, deleteUser, updateUser } from "@/db/user.actions";
+import { Webhook } from "svix";
+import { headers } from "next/headers";
+import { WebhookEvent } from "@clerk/nextjs/server";
+import client from "@/lib/client"; // Importa o Apollo Client
 import { CREATE_USER, DELETE_USER } from "@/graphql/mutations";
 
-import getToken from "@/lib/actions/token.action";
-import client from "@/lib/client";
-import { clerkClient, WebhookEvent } from "@clerk/nextjs/server";
-import { headers } from "next/headers";
-import { NextResponse } from "next/server";
-import { Webhook } from "svix";
-
 export async function POST(req: Request) {
-  console.log("Webhook POST called");
+  const WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SECRET;
 
-  const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
   if (!WEBHOOK_SECRET) {
     throw new Error(
-      "Please add WEBHOOK_SECRET from Clerk Dashboard to .env or .env.local"
+      "Please add CLERK_WEBHOOK_SECRET from Clerk Dashboard to .env or .env.local"
     );
   }
 
@@ -28,7 +21,7 @@ export async function POST(req: Request) {
 
   // If there are no headers, error out
   if (!svix_id || !svix_timestamp || !svix_signature) {
-    return new Response("Error occured -- no svix headers", {
+    return new Response("Error occurred -- no svix headers", {
       status: 400,
     });
   }
@@ -51,97 +44,60 @@ export async function POST(req: Request) {
     }) as WebhookEvent;
   } catch (err) {
     console.error("Error verifying webhook:", err);
-    return new Response("Error occured", {
+    return new Response("Error occurred", {
       status: 400,
     });
   }
 
-  // Get the ID and type
-  const { id } = evt.data;
   const eventType = evt.type;
 
-  try {
-    // CREATE
-    console.log(eventType);
-    if (eventType === "user.created") {
-      const {
-        id,
-        email_addresses,
-        username,
-        first_name,
-        last_name,
-        image_url,
-      } = evt.data;
+  if (eventType === "user.created") {
+    const { id, email_addresses, first_name, last_name, image_url } = evt.data;
 
-      if (!id || !email_addresses) {
-        return new Response("Error occurred -- missing data", {
-          status: 400,
-        });
-      }
-
-      const user = {
-        clerkUserId: id,
-        email: email_addresses[0].email_address,
-        username: username,
-        //   ...(first_name ? { firstName: first_name } : {}),
-        //   ...(last_name ? { lastName: last_name } : {}),
-        //   ...(image_url ? { imageUrl: image_url } : {}),
-      };
-
-      // Chama a mutação GraphQL para criar o usuário
-
-      return await client.mutate({
-        mutation: CREATE_USER,
-        variables: {
-          email: user.email,
-          clerkUserId: user.clerkUserId,
-        },
+    if (!id || !email_addresses) {
+      return new Response("Error occurred -- missing data", {
+        status: 400,
       });
-      // return NextResponse.json({ message: "OK", user: newUser });
     }
 
-    // UPDATE
-    // if (eventType === "user.updated") {
-    //   const { id, image_url, username } = evt.data;
+    const user = {
+      clerkUserId: id,
+      email: email_addresses[0].email_address,
+      //   ...(first_name ? { firstName: first_name } : {}),
+      //   ...(last_name ? { lastName: last_name } : {}),
+      //   ...(image_url ? { imageUrl: image_url } : {}),
+    };
 
-    //   const user = {
-    //     username: username || null,
-    //     image_url: image_url,
-    //   };
+    // Chama a mutação GraphQL para criar o usuário
 
-    //   const updatedUser = await updateUser(id, user);
+    await client.mutate({
+      mutation: CREATE_USER,
+      variables: {
+        email: user.email,
+        clerkUserId: user.clerkUserId,
+      },
+    });
 
-    //   return NextResponse.json({ message: "OK", user: updatedUser });
-    // }
-
-    // DELETE
-    if (eventType === "user.deleted") {
-      const { id } = evt.data;
-      console.log("Received event:", evt);
-
-      if (!id) {
-        return new Response("Error occurred -- missing data", {
-          status: 400,
-        });
-      }
-
-      await client
-        .mutate({
-          mutation: DELETE_USER,
-          variables: {
-            id,
-          },
-        })
-        .catch((err) => {
-          console.error("Error executing DELETE_USER mutation:", err);
-        });
-
-      return NextResponse.json({ message: "OK" });
-    }
-  } catch (error) {
-    console.error(`Error handling ${eventType} event:`, error);
-    return new Response(`Error handling ${eventType} event`, { status: 500 });
+    return new Response("", { status: 200 });
   }
 
-  // return new Response("success", { status: 200 });
+  if (eventType === "user.deleted") {
+    const { id } = evt.data;
+    console.log("Received event:", evt);
+
+    if (!id) {
+      return new Response("Error occurred -- missing data", {
+        status: 400,
+      });
+    }
+
+    await client.mutate({
+      mutation: DELETE_USER,
+      variables: {
+        id,
+      },
+    });
+
+    return new Response("", { status: 200 });
+  }
 }
