@@ -1,8 +1,9 @@
-import { Resolver, Query, Context } from '@nestjs/graphql';
+import { Resolver, Query, Context, Mutation, Args } from '@nestjs/graphql';
 import { ClerkGuard } from './guards/clerk.guard';
 import { User } from './users.schema';
 import { UserService } from './users.service';
 import { UseGuards } from '@nestjs/common';
+import { DeleteInput, DeleteResponse } from './dtos/delete-user.dto';
 
 @Resolver(() => User)
 export class UserResolver {
@@ -20,10 +21,26 @@ export class UserResolver {
     const user = await this.usersService.getUser(userId);
 
     if (!user) {
-      console.log(userId);
       throw new Error('User not found');
     }
 
     return user;
+  }
+
+  // @Mutation(() => DeleteResponse)
+  // async register(
+  //   @Args('registerInput') registerInput: DeleteInput,
+  // ): Promise<RegisterResponse> {
+  //   const error = await this.usersService.deleteUser(registerInput.id);
+  //   return { error };
+  // }
+
+  @Mutation(() => DeleteResponse)
+  async deleteUser(
+    @Args('deleteInput') deleteInput: DeleteInput,
+  ): Promise<DeleteResponse> {
+    console.log(deleteInput);
+    const error = await this.usersService.deleteUser(deleteInput);
+    return { error };
   }
 }

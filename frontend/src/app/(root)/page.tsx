@@ -17,8 +17,6 @@ export default async function Dashboard() {
     },
   });
 
-  console.log(response);
-
   return (
     <div className="flex flex-col flex-1 items-center w-full h-screen bg-primary">
       <UserButton />
