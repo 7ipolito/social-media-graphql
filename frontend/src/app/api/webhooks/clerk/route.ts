@@ -2,7 +2,7 @@ import { Webhook } from "svix";
 import { headers } from "next/headers";
 import { WebhookEvent } from "@clerk/nextjs/server";
 import client from "@/lib/client"; // Importa o Apollo Client
-import { CREATE_USER } from "@/graphql/mutations";
+import { CREATE_USER, DELETE_USER } from "@/graphql/mutations";
 
 export async function POST(req: Request) {
   const WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SECRET;
@@ -77,7 +77,27 @@ export async function POST(req: Request) {
         clerkUserId: user.clerkUserId,
       },
     });
+
+    return new Response("", { status: 200 });
   }
 
-  return new Response("", { status: 200 });
+  if (eventType === "user.deleted") {
+    const { id } = evt.data;
+    console.log("Received event:", evt);
+
+    if (!id) {
+      return new Response("Error occurred -- missing data", {
+        status: 400,
+      });
+    }
+
+    await client.mutate({
+      mutation: DELETE_USER,
+      variables: {
+        id,
+      },
+    });
+
+    return new Response("", { status: 200 });
+  }
 }

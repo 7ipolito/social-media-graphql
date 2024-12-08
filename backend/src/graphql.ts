@@ -8,6 +8,10 @@
 /* tslint:disable */
 /* eslint-disable */
 
+export interface DeleteInput {
+    id: string;
+}
+
 export interface RegisterInput {
     clerkUserId: string;
     email: string;
@@ -15,9 +19,19 @@ export interface RegisterInput {
 
 export interface User {
     _id: string;
+    clerkUserId: string;
     username: string;
     email: string;
     createdAt: DateTime;
+}
+
+export interface ErrorTypeDelete {
+    path: string;
+    message: string;
+}
+
+export interface DeleteResponse {
+    error?: Nullable<ErrorTypeDelete[]>;
 }
 
 export interface Post {
@@ -42,6 +56,7 @@ export interface IQuery {
 }
 
 export interface IMutation {
+    deleteUser(deleteInput: DeleteInput): DeleteResponse | Promise<DeleteResponse>;
     register(registerInput: RegisterInput): RegisterResponse | Promise<RegisterResponse>;
 }
 

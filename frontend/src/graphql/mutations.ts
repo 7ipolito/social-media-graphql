@@ -17,14 +17,24 @@ export const CREATE_USER = gql`
       error {
         message
         path
-    }
-
+      }
     }
   }
 `;
 
 export const LOGOUT = gql`
-  mutation{
+  mutation {
     logout
   }
-`
+`;
+
+export const DELETE_USER = gql`
+  mutation ($id: String!) {
+    deleteUser(deleteInput: { id: $id }) {
+      error {
+        message
+        path
+      }
+    }
+  }
+`;

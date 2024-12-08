@@ -7,16 +7,12 @@ import { RegisterInput } from './dtos/register-user.dto';
 import * as yup from 'yup';
 import { duplicate, emailNotLongEnough, invalidEmail } from './errorMessages';
 import { formatYupError } from 'src/utils/formatYupError';
+import { IError } from 'src/types/IError';
 
 const schema = yup.object().shape({
   clerkUserId: yup.string(),
   email: yup.string().min(3, emailNotLongEnough).max(255).email(invalidEmail),
 });
-
-export interface IError {
-  path: string;
-  message: string;
-}
 
 @Injectable()
 export class RegisterService {

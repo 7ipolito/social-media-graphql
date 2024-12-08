@@ -1,5 +1,5 @@
 import { InputType, Field, ObjectType } from '@nestjs/graphql';
-import { IError } from '../register.service';
+import { IError } from 'src/types/IError';
 
 @InputType()
 export class RegisterInput {

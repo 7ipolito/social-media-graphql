@@ -4,6 +4,7 @@
 
 type User {
   _id: ID!
+  clerkUserId: String!
   username: String!
   email: String!
   createdAt: DateTime!
@@ -13,6 +14,15 @@ type User {
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
 scalar DateTime
+
+type ErrorTypeDelete {
+  path: String!
+  message: String!
+}
+
+type DeleteResponse {
+  error: [ErrorTypeDelete!]
+}
 
 type Post {
   id: ID!
@@ -36,7 +46,12 @@ type Query {
 }
 
 type Mutation {
+  deleteUser(deleteInput: DeleteInput!): DeleteResponse!
   register(registerInput: RegisterInput!): RegisterResponse!
+}
+
+input DeleteInput {
+  id: String!
 }
 
 input RegisterInput {
