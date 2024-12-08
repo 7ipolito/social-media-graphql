@@ -42,62 +42,65 @@ export async function POST(req: Request) {
       "svix-timestamp": svix_timestamp,
       "svix-signature": svix_signature,
     }) as WebhookEvent;
+    const eventType = evt.type;
+
+    if (eventType === "user.created") {
+      const { id, email_addresses, first_name, last_name, image_url } =
+        evt.data;
+
+      if (!id || !email_addresses) {
+        return new Response("Error occurred -- missing data", {
+          status: 400,
+        });
+      }
+
+      const user = {
+        clerkUserId: id,
+        email: email_addresses[0].email_address,
+        //   ...(first_name ? { firstName: first_name } : {}),
+        //   ...(last_name ? { lastName: last_name } : {}),
+        //   ...(image_url ? { imageUrl: image_url } : {}),
+      };
+
+      // Chama a mutação GraphQL para criar o usuário
+
+      await client.mutate({
+        mutation: CREATE_USER,
+        variables: {
+          email: user.email,
+          clerkUserId: user.clerkUserId,
+        },
+      });
+
+      return new Response("User created", { status: 200 });
+    }
+
+    if (eventType === "user.deleted") {
+      const { id } = evt.data;
+
+      if (!id) {
+        return new Response("Error occurred -- missing data", {
+          status: 400,
+        });
+      }
+
+      const response = await client.mutate({
+        mutation: DELETE_USER,
+        variables: {
+          id: id,
+        },
+      });
+
+      return new Response("User deleted", { status: 200 });
+    }
   } catch (err) {
     console.error("Error verifying webhook:", err);
     return new Response("Error occurred", {
       status: 400,
     });
   }
+}
 
-  const eventType = evt.type;
-
-  if (eventType === "user.created") {
-    const { id, email_addresses, first_name, last_name, image_url } = evt.data;
-
-    if (!id || !email_addresses) {
-      return new Response("Error occurred -- missing data", {
-        status: 400,
-      });
-    }
-
-    const user = {
-      clerkUserId: id,
-      email: email_addresses[0].email_address,
-      //   ...(first_name ? { firstName: first_name } : {}),
-      //   ...(last_name ? { lastName: last_name } : {}),
-      //   ...(image_url ? { imageUrl: image_url } : {}),
-    };
-
-    // Chama a mutação GraphQL para criar o usuário
-
-    await client.mutate({
-      mutation: CREATE_USER,
-      variables: {
-        email: user.email,
-        clerkUserId: user.clerkUserId,
-      },
-    });
-
-    return new Response("", { status: 200 });
-  }
-
-  if (eventType === "user.deleted") {
-    const { id } = evt.data;
-    console.log("Received event:", evt);
-
-    if (!id) {
-      return new Response("Error occurred -- missing data", {
-        status: 400,
-      });
-    }
-
-    await client.mutate({
-      mutation: DELETE_USER,
-      variables: {
-        id,
-      },
-    });
-
-    return new Response("", { status: 200 });
-  }
+export async function GET() {
+  return Response.json({ message: "Hello World!" });
 }
