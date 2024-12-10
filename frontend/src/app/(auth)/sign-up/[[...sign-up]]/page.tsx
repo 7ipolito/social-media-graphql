@@ -6,8 +6,7 @@ import { CREATE_USER } from "@/graphql/mutations";
 
 const SignUpPage = () => {
   return (
-    <div>
-      <h1>Crie sua conta</h1>
+    <div className="flex flex-col flex-1 items-center justify-center w-full h-screen bg-primary">
       <SignUp />
     </div>
   );
