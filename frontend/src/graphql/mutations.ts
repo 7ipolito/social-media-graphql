@@ -12,8 +12,20 @@ export const LOGIN = gql`
 `;
 
 export const CREATE_USER = gql`
-  mutation CreateAccount($email: String!, $clerkUserId: String!) {
-    register(registerInput: { email: $email, clerkUserId: $clerkUserId }) {
+  mutation CreateAccount(
+    $email: String!
+    $clerkUserId: String!
+    $image: String!
+    $username: String!
+  ) {
+    register(
+      registerInput: {
+        email: $email
+        clerkUserId: $clerkUserId
+        image: $image
+        username: $username
+      }
+    ) {
       error {
         message
         path

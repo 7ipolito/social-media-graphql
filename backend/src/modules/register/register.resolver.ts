@@ -12,6 +12,7 @@ export class RegisterResolver {
     @Args('registerInput') registerInput: RegisterInput,
   ): Promise<RegisterResponse> {
     const error = await this.registerService.createUser(registerInput);
+
     return { error };
   }
 }

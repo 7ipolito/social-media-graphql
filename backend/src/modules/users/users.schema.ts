@@ -13,6 +13,9 @@ export class User {
   username: string;
 
   @Field()
+  image: string;
+
+  @Field()
   email: string;
 
   @Field()
