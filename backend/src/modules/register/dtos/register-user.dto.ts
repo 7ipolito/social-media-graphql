@@ -7,6 +7,12 @@ export class RegisterInput {
   clerkUserId: string;
 
   @Field()
+  username: string;
+
+  @Field({ nullable: true })
+  image: string;
+
+  @Field()
   email: string;
 }
 @ObjectType()

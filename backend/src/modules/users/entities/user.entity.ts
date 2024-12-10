@@ -19,6 +19,10 @@ export class User {
 
   @Field(() => String)
   @Prop()
+  image: string;
+
+  @Field(() => String)
+  @Prop({ required: true, unique: true })
   username: string;
 
   @Field(() => Date)

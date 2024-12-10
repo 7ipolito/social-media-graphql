@@ -12,6 +12,8 @@ import { IError } from 'src/types/IError';
 const schema = yup.object().shape({
   clerkUserId: yup.string(),
   email: yup.string().min(3, emailNotLongEnough).max(255).email(invalidEmail),
+  username: yup.string().min(3, emailNotLongEnough).max(20),
+  image: yup.string(),
 });
 
 @Injectable()
@@ -30,7 +32,7 @@ export class RegisterService {
   }
 
   async createUser(data: RegisterInput): Promise<IError[] | null> {
-    const { email, clerkUserId } = data;
+    const { email, clerkUserId, image, username } = data;
     try {
       await schema.validate(data, { abortEarly: false });
     } catch (err: any) {
@@ -46,9 +48,29 @@ export class RegisterService {
       ];
     }
 
+    if (await this.verifyUsernameExists(username)) {
+      return [
+        {
+          path: 'username',
+          message: duplicate,
+        },
+      ];
+    }
+
+    console.log(
+      await this.userModel.create({
+        email,
+        clerkUserId,
+        image,
+        username,
+      }),
+    );
+
     await this.userModel.create({
       email,
       clerkUserId,
+      image,
+      username,
     });
 
     return null;

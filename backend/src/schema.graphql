@@ -6,6 +6,7 @@ type User {
   _id: ID!
   clerkUserId: String!
   username: String!
+  image: String!
   email: String!
   createdAt: DateTime!
 }
@@ -56,5 +57,7 @@ input DeleteInput {
 
 input RegisterInput {
   clerkUserId: String!
+  username: String!
+  image: String
   email: String!
 }

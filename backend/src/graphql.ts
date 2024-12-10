@@ -14,6 +14,8 @@ export interface DeleteInput {
 
 export interface RegisterInput {
     clerkUserId: string;
+    username: string;
+    image?: Nullable<string>;
     email: string;
 }
 
@@ -21,6 +23,7 @@ export interface User {
     _id: string;
     clerkUserId: string;
     username: string;
+    image: string;
     email: string;
     createdAt: DateTime;
 }
