@@ -1,13 +1,18 @@
 "use client";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Kanit } from "next/font/google";
 import "./globals.css";
 import { ApolloProvider } from "@apollo/client";
 import client from "@/lib/client";
 import Head from "next/head";
 import { ClerkProvider } from "@clerk/nextjs";
+import { NextUIProvider } from "@nextui-org/react";
 
-const inter = Inter({ subsets: ["latin"] });
+const kanit = Kanit({
+  subsets: ["latin"],
+  weight: "500",
+  variable: "--font-kanit",
+});
 
 // export const metadata: Metadata = {
 //   title: "Create Next App",
@@ -20,16 +25,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
-      <html lang="en">
-        <Head>
-          <link rel="icon" href="/favicon.ico" />
-          {/* Outros metadados podem ser adicionados aqui */}
-        </Head>
-        <body>
-          <ApolloProvider client={client}>{children}</ApolloProvider>
-        </body>
-      </html>
-    </ClerkProvider>
+    <html lang="pt-BR" className={kanit.variable}>
+      <body>
+        <ClerkProvider>
+          <ApolloProvider client={client}>
+            {" "}
+            <NextUIProvider>{children} </NextUIProvider>
+          </ApolloProvider>
+        </ClerkProvider>
+      </body>
+    </html>
   );
 }
