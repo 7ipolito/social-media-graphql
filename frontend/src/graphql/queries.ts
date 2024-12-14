@@ -5,6 +5,9 @@ export const GET_WHOAMI = gql`
     whoami {
       clerkUserId
       email
+      image
+      username
+      createdAt
     }
   }
 `;

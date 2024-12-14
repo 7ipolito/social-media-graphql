@@ -11,6 +11,7 @@
   "dependencies": {
     "@apollo/client": "^3.11.4",
     "@clerk/nextjs": "^5.7.1",
+    "@nextui-org/card": "^2.2.7",
     "@nextui-org/navbar": "^2.2.5",
     "@nextui-org/react": "^2.6.8",
     "apollo-server-micro": "^3.13.0",
@@ -26,6 +27,7 @@
     "react": "^18",
     "react-dom": "^18",
     "react-hot-toast": "^2.4.1",
+    "react-player": "^2.16.0",
     "svix": "^1.37.0"
   },
   "devDependencies": {

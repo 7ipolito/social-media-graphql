@@ -1,6 +1,9 @@
 import NavBar from "@/components/Navbar";
+import ProfileCard from "@/components/ProfileCard";
+import Sponsored from "@/components/Sponsored";
 import { GET_WHOAMI } from "@/graphql/queries";
 import getToken from "@/lib/actions/token.action";
+import { getUserData } from "@/lib/actions/user.action";
 import client from "@/lib/client";
 import { UserButton } from "@clerk/nextjs";
 import {
@@ -9,40 +12,39 @@ import {
   NavbarContent,
   NavbarItem,
   Button,
+  Card,
+  CardFooter,
+  Image,
+  CardHeader,
 } from "@nextui-org/react";
 import Link from "next/link";
 
-async function fetchUserData(token: string, retryCount = 0) {
-  try {
-    const response = await client.query({
-      query: GET_WHOAMI,
-      context: {
-        headers: {
-          authorization: token ? `Bearer ${token}` : "",
-        },
-      },
-    });
-    return response.data.whoami;
-  } catch (error) {
-    if (retryCount < 3) {
-      console.warn(`Tentativa ${retryCount + 1} falhou. Tentando novamente...`);
-      return await fetchUserData(token, retryCount + 1);
-    }
-    throw new Error(
-      "Não foi possível buscar os dados do usuário após 3 tentativas."
-    );
-  }
-}
-
 export default async function Dashboard() {
-  const { token } = await getToken();
-
   try {
-    const user = await fetchUserData(token);
-
+    const user = await getUserData();
+    console.log(user);
     return (
-      <div className="flex flex-col flex-1 items-center w-full h-screen bg-primary">
-        <NavBar />
+      <div className=" flex flex-1 w-full">
+        <div className="lg:min-h-screen flex flex-col  lg:max-w-screen-xl items-center justify-between mx-auto pb-32  bg-primary">
+          <NavBar />
+          <div className=" lg:grid  grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
+            <div className="">
+              <div className="flex flex-col items-center p-8 ">
+                <ProfileCard
+                  clerkUserId={user.clerkId}
+                  email={user.email}
+                  image={user.image}
+                  username={user.username}
+                  createAt={user.createAt}
+                />
+                <Sponsored />
+              </div>
+            </div>
+            <div className="w-[500px] h-[500px]  flex justify-center items-center"></div>
+            <div className="w-[500px] h-[500px] flex justify-center items-center"></div>
+          </div>
+        </div>
+
         {/* <UserButton />
         <h1 className="text-white">Welcome to social media graphql</h1>
         {user ? (

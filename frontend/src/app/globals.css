@@ -4,11 +4,13 @@
 
 :root {
     --font-kanit: 'Kanit', sans-serif; 
+    --primary: #3D2C8D; 
   }
   
   body {
     font-family: var(--font-kanit); 
     margin: 0;
+    background-color: var(--primary);
     padding: 0;
     box-sizing: border-box;
   }
