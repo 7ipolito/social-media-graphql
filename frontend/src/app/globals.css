@@ -3,11 +3,11 @@
 @tailwind utilities;
 
 :root {
-    --font-kanit: 'Kanit', sans-serif; /* Define um fallback para a fonte */
+    --font-kanit: 'Kanit', sans-serif; 
   }
   
   body {
-    font-family: var(--font-kanit); /* Aplica a variável da fonte */
+    font-family: var(--font-kanit); 
     margin: 0;
     padding: 0;
     box-sizing: border-box;

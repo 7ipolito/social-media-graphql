@@ -1,17 +1,26 @@
+"use client";
+import React, { useEffect, useState } from "react";
+import { UserButton } from "@clerk/nextjs";
 import {
   Navbar,
   NavbarBrand,
   NavbarContent,
   NavbarItem,
-  Button,
 } from "@nextui-org/react";
 import Link from "next/link";
 import Image from "next/image";
 
-import React from "react";
-import { UserButton } from "@clerk/nextjs";
-
 const NavBar = () => {
+  const [isUserButtonVisible, setUserButtonVisible] = useState(false);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setUserButtonVisible(true);
+    }, 300);
+
+    return () => clearTimeout(timeout);
+  }, []);
+
   return (
     <Navbar
       className="bg-navbarColor"
@@ -33,25 +42,35 @@ const NavBar = () => {
       }}
     >
       <NavbarBrand>
-        <Image src={"/logo.png"} width={60} height={60} alt={"Logo"} />
-        <p className="font-bold text-inherit text-white">SocialMediaGraphQl</p>
+        <Image
+          src={"/logo.png"}
+          width={60}
+          height={60}
+          alt={"Logo"}
+          className="transition-all duration-300 transform hover:scale-105"
+        />
+        <p className="font-bold text-inherit text-white transition-all duration-300 transform hover:scale-105">
+          SocialMediaGraphQl
+        </p>
       </NavbarBrand>
 
       <NavbarContent justify="end">
-        <NavbarItem isActive>
+        <NavbarItem
+          isActive
+          className="transition-all duration-300 transform hover:scale-105 hover:text-primary"
+        >
           <Link href="#" className="text-white">
             Feed
           </Link>
         </NavbarItem>
-        <UserButton />
-        {/* <NavbarItem className="hidden lg:flex">
-          <Link href="#">Login</Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Button as={Link} color="primary" href="#" variant="flat">
-            Sign Up
-          </Button>
-        </NavbarItem> */}
+
+        <div
+          className={`${
+            isUserButtonVisible ? "opacity-100" : "opacity-0 translate-y-4"
+          } transition-all duration-500 ease-out`}
+        >
+          <UserButton />
+        </div>
       </NavbarContent>
     </Navbar>
   );
