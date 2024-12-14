@@ -1,7 +1,16 @@
+import NavBar from "@/components/Navbar";
 import { GET_WHOAMI } from "@/graphql/queries";
 import getToken from "@/lib/actions/token.action";
 import client from "@/lib/client";
 import { UserButton } from "@clerk/nextjs";
+import {
+  Navbar,
+  NavbarBrand,
+  NavbarContent,
+  NavbarItem,
+  Button,
+} from "@nextui-org/react";
+import Link from "next/link";
 
 async function fetchUserData(token: string, retryCount = 0) {
   try {
@@ -33,7 +42,8 @@ export default async function Dashboard() {
 
     return (
       <div className="flex flex-col flex-1 items-center w-full h-screen bg-primary">
-        <UserButton />
+        <NavBar />
+        {/* <UserButton />
         <h1 className="text-white">Welcome to social media graphql</h1>
         {user ? (
           <p className="text-white">Seu email é: {user.email}</p>
@@ -41,7 +51,7 @@ export default async function Dashboard() {
           <p className="text-red-500">
             Erro: Dados de usuário não encontrados. Complete seu cadastro!
           </p>
-        )}
+        )} */}
       </div>
     );
   } catch (error) {
@@ -49,12 +59,12 @@ export default async function Dashboard() {
 
     return (
       <div className="flex flex-col flex-1 items-center w-full h-screen bg-primary">
-        <UserButton />
+        {/* <UserButton />
         <h1 className="text-white">Welcome to social media graphql</h1>
         <p className="text-red-500">
           Não foi possível carregar os dados. Por favor, tente novamente mais
           tarde.
-        </p>
+        </p> */}
       </div>
     );
   }
