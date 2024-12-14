@@ -10,25 +10,23 @@ export default function Page() {
   const [showText, setShowText] = useState(true);
 
   useEffect(() => {
-    // Controle do tempo para o texto desaparecer e o SignIn aparecer
     const timer = setTimeout(() => {
-      setShowText(false); // Remove o texto após 2 segundos
-      setTimeout(() => setShowSignIn(true), 1000); // Mostra o SignIn após 1 segundo
+      setShowText(false);
+      setTimeout(() => setShowSignIn(true), 1000);
     }, 3000);
 
-    return () => clearTimeout(timer); // Limpa o timer ao desmontar
+    return () => clearTimeout(timer);
   }, []);
 
-  // Variantes para a animação do texto letra por letra
   const textVariants = {
     hidden: { opacity: 0 },
     visible: (i: number) => ({
       opacity: 1,
-      transition: { delay: i * 0.1 }, // Delay para cada letra
+      transition: { delay: i * 0.1 },
     }),
     exit: {
       opacity: 0,
-      transition: { duration: 0.5 }, // Tempo para desaparecer
+      transition: { duration: 0.5 },
     },
   };
 
@@ -36,12 +34,11 @@ export default function Page() {
 
   return (
     <div className="flex flex-col items-center justify-center w-full h-screen bg-primary">
-      {/* Animação para as imagens */}
       <motion.div
         className="flex flex-col items-center mb-4"
-        initial={{ opacity: 0, scale: 0.8 }} // Ponto inicial
-        animate={{ opacity: 1, scale: 1 }} // Ponto final
-        transition={{ duration: 1.5, ease: "easeOut" }} // Duração da animação
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 1.5, ease: "easeOut" }}
       >
         <Image
           src="/logo.png"
@@ -50,7 +47,6 @@ export default function Page() {
           height={100}
         />
 
-        {/* Texto animado letra por letra */}
         {showText && (
           <motion.div
             className="text-white text-lg mt-2"
@@ -59,11 +55,7 @@ export default function Page() {
             exit="exit"
           >
             {text.split("").map((char, index) => (
-              <motion.span
-                key={index}
-                custom={index} // Passa o índice para calcular o delay
-                variants={textVariants}
-              >
+              <motion.span key={index} custom={index} variants={textVariants}>
                 {char}
               </motion.span>
             ))}
@@ -71,12 +63,11 @@ export default function Page() {
         )}
       </motion.div>
 
-      {/* Exibe o SignIn após o texto desaparecer */}
       {showSignIn && (
         <motion.div
-          initial={{ opacity: 0, y: 50 }} // Ponto inicial
-          animate={{ opacity: 1, y: 0 }} // Ponto final
-          transition={{ duration: 0.8, ease: "easeOut" }} // Duração da animação
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
         >
           <SignIn />
         </motion.div>
