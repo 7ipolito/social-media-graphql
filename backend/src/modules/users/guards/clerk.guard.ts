@@ -22,7 +22,10 @@ export class ClerkGuard implements CanActivate {
       const jwtKey = process.env.CLERK_JWT_KEY;
       const verifiedToken = await verifyToken(token, {
         jwtKey,
-        authorizedParties: ['http://localhost:3000', 'api.example.com'],
+        authorizedParties: [
+          'http://localhost:3000',
+          'https://social-media-graphql-eight.vercel.app/',
+        ],
       });
 
       ctx.getContext().userId = verifiedToken.sub;
