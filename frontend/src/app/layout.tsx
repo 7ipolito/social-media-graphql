@@ -28,7 +28,7 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className={kanit.variable}>
       <body>
-        <ClerkProvider>
+        <ClerkProvider afterSignOutUrl={"/"}>
           <ApolloProvider client={client}>
             {" "}
             <NextUIProvider>{children} </NextUIProvider>
