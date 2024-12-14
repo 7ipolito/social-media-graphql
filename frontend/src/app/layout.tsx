@@ -7,6 +7,7 @@ import client from "@/lib/client";
 import Head from "next/head";
 import { ClerkProvider } from "@clerk/nextjs";
 import { NextUIProvider } from "@nextui-org/react";
+import NavBar from "@/components/Navbar";
 
 const kanit = Kanit({
   subsets: ["latin"],

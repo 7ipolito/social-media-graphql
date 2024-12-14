@@ -8,3 +8,11 @@ export interface CreateUserParams {
 export interface DeleteUserParams {
   clerkId: string;
 }
+
+export interface GetUserParams {
+  clerkId: string;
+  email: string;
+  username: string | null;
+  image: string;
+  createAt: Date;
+}

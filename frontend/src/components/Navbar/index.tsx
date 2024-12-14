@@ -23,7 +23,7 @@ const NavBar = () => {
 
   return (
     <Navbar
-      className="bg-navbarColor"
+      className="bg-navbarColor h-20"
       classNames={{
         item: [
           "flex",
