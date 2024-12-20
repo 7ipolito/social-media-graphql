@@ -60,12 +60,7 @@ const ProfileCard = ({
           Frontend developer and UI/UX enthusiast. Join me on this coding
           adventure!
         </p>
-        <span className="pt-2">
-          #FrontendWithHipolito
-          <span aria-label="computer" className="py-2" role="img">
-            💻
-          </span>
-        </span>
+        <span className="pt-2">@{username}</span>
       </CardBody>
       {/* <CardFooter className="gap-3">
         <div className="flex gap-1">
