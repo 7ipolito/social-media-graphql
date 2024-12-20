@@ -30,7 +30,7 @@ export default function Page() {
     },
   };
 
-  const text = "SOCIAL MEDIA GRAPHQL";
+  // const text = "SOCIAL MEDIA GRAPHQL";
 
   return (
     <div className="flex flex-col items-center justify-center w-full h-screen bg-primary">
@@ -47,7 +47,7 @@ export default function Page() {
           height={100}
         />
 
-        {showText && (
+        {/* {showText && (
           <motion.div
             className="text-white text-lg mt-2"
             initial="hidden"
@@ -60,7 +60,7 @@ export default function Page() {
               </motion.span>
             ))}
           </motion.div>
-        )}
+        )} */}
       </motion.div>
 
       {showSignIn && (

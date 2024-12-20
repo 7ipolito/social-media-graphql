@@ -60,14 +60,9 @@ const ProfileCard = ({
           Frontend developer and UI/UX enthusiast. Join me on this coding
           adventure!
         </p>
-        <span className="pt-2">
-          #FrontendWithHipolito
-          <span aria-label="computer" className="py-2" role="img">
-            💻
-          </span>
-        </span>
+        <span className="pt-2">@{username}</span>
       </CardBody>
-      <CardFooter className="gap-3">
+      {/* <CardFooter className="gap-3">
         <div className="flex gap-1">
           <p className="font-semibold text-default-400 text-small">4</p>
           <p className=" text-default-400 text-small">Following</p>
@@ -76,7 +71,7 @@ const ProfileCard = ({
           <p className="font-semibold text-default-400 text-small">97.1K</p>
           <p className="text-default-400 text-small">Followers</p>
         </div>
-      </CardFooter>
+      </CardFooter> */}
     </Card>
   );
 };
