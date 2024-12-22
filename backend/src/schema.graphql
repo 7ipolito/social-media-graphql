@@ -28,8 +28,12 @@ type DeleteResponse {
 type Post {
   id: ID!
   body: String!
-  username: String!
   createdAt: String!
+}
+
+type ErrorTypeCreatePost {
+  path: String!
+  message: String!
 }
 
 type ErrorType {
@@ -48,11 +52,17 @@ type Query {
 
 type Mutation {
   deleteUser(deleteInput: DeleteInput!): DeleteResponse!
+  createPost(createPostInput: CreatePostInput!): Post!
   register(registerInput: RegisterInput!): RegisterResponse!
 }
 
 input DeleteInput {
   id: String!
+}
+
+input CreatePostInput {
+  body: String!
+  clerkUserId: String!
 }
 
 input RegisterInput {

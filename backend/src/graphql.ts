@@ -12,6 +12,11 @@ export interface DeleteInput {
     id: string;
 }
 
+export interface CreatePostInput {
+    body: string;
+    clerkUserId: string;
+}
+
 export interface RegisterInput {
     clerkUserId: string;
     username: string;
@@ -40,8 +45,12 @@ export interface DeleteResponse {
 export interface Post {
     id: string;
     body: string;
-    username: string;
     createdAt: string;
+}
+
+export interface ErrorTypeCreatePost {
+    path: string;
+    message: string;
 }
 
 export interface ErrorType {
@@ -60,6 +69,7 @@ export interface IQuery {
 
 export interface IMutation {
     deleteUser(deleteInput: DeleteInput): DeleteResponse | Promise<DeleteResponse>;
+    createPost(createPostInput: CreatePostInput): Post | Promise<Post>;
     register(registerInput: RegisterInput): RegisterResponse | Promise<RegisterResponse>;
 }
 

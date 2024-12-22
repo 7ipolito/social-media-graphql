@@ -50,3 +50,12 @@ export const DELETE_USER = gql`
     }
   }
 `;
+
+export const CREATE_POST = gql`
+  mutation CreatePost($clerkUserId: String!, $body: String!) {
+    createPost(createPostInput: { clerkUserId: $clerkUserId, body: $body }) {
+      body
+      id
+    }
+  }
+`;

@@ -16,10 +16,6 @@ export class Post extends Document {
   @Prop()
   createdAt: Date;
 
-  @Field()
-  @Prop({ required: true })
-  username: string;
-
   @Field(() => User)
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true })
   user: User;

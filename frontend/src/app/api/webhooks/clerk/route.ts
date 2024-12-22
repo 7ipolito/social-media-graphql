@@ -50,7 +50,7 @@ export async function POST(req: Request) {
       }
 
       await createUser({
-        clerkId: id,
+        clerkUserId: id,
         email: email_addresses[0].email_address,
         image: image_url,
         username: username ?? null,
@@ -69,7 +69,7 @@ export async function POST(req: Request) {
       }
 
       await deleteUser({
-        clerkId: id,
+        clerkUserId: id,
       });
 
       return new Response("User deleted", { status: 200 });
