@@ -27,7 +27,7 @@ const ProfileCard = ({
   const [isFollowed, setIsFollowed] = React.useState(false);
 
   return (
-    <Card className="max-w-96 max-h-96 h-64 mb-8">
+    <Card className="max-w-96 max-h-96 h-64 ">
       <CardHeader className="justify-between">
         <div className="flex gap-5">
           <Avatar isBordered radius="full" size="md" src={image} />

@@ -52,6 +52,7 @@ import { RegisterModule } from './modules/register/register.module';
     UsersModule,
     PostsModule,
     RegisterModule,
+    PostsModule,
   ],
 })
 export class AppModule {}

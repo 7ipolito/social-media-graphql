@@ -10,14 +10,14 @@ import {
 } from "./shared.types";
 
 export async function createUser(userData: CreateUserParams) {
-  const { clerkId, email, image, username } = userData;
+  const { clerkUserId, email, image, username } = userData;
 
   try {
     await client.mutate({
       mutation: CREATE_USER,
       variables: {
         email: email,
-        clerkUserId: clerkId,
+        clerkUserId: clerkUserId,
         image: image,
         username: username,
       },
@@ -29,13 +29,13 @@ export async function createUser(userData: CreateUserParams) {
 }
 
 export async function deleteUser(deleteUserData: DeleteUserParams) {
-  const { clerkId } = deleteUserData;
+  const { clerkUserId } = deleteUserData;
 
   try {
     await client.mutate({
       mutation: DELETE_USER,
       variables: {
-        id: clerkId,
+        id: clerkUserId,
       },
     });
   } catch (error) {

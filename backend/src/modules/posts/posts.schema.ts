@@ -9,8 +9,5 @@ export class Post {
   body: string;
 
   @Field()
-  username: string;
-
-  @Field()
   createdAt: string;
 }

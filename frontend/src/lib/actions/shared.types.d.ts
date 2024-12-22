@@ -1,18 +1,22 @@
 export interface CreateUserParams {
-  clerkId: string;
+  clerkUserId: string;
   email: string;
   username: string | null;
   image: string;
 }
 
 export interface DeleteUserParams {
-  clerkId: string;
+  clerkUserId: string;
 }
 
 export interface GetUserParams {
-  clerkId: string;
+  clerkUserId: string;
   email: string;
   username: string | null;
   image: string;
   createAt: Date;
+}
+
+export interface GetPostParams {
+  body: string;
 }
