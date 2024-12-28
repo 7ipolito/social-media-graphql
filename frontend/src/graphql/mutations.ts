@@ -59,3 +59,12 @@ export const CREATE_POST = gql`
     }
   }
 `;
+
+export const LIKE_POST = gql`
+  mutation LikePost($likePostInput: LikePostInput!) {
+    likePost(likePostInput: $likePostInput) {
+      body
+      countLikes
+    }
+  }
+`;

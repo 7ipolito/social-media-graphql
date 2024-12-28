@@ -28,10 +28,18 @@ type DeleteResponse {
 type Post {
   id: ID!
   body: String!
+  countLikes: Float!
   createdAt: String!
+  user: User!
+  likes: [User!]
 }
 
 type ErrorTypeCreatePost {
+  path: String!
+  message: String!
+}
+
+type ErrorTypeLikePost {
   path: String!
   message: String!
 }
@@ -53,6 +61,7 @@ type Query {
 type Mutation {
   deleteUser(deleteInput: DeleteInput!): DeleteResponse!
   createPost(createPostInput: CreatePostInput!): Post!
+  likePost(likePostInput: LikePostInput!): Post!
   register(registerInput: RegisterInput!): RegisterResponse!
 }
 
@@ -62,6 +71,11 @@ input DeleteInput {
 
 input CreatePostInput {
   body: String!
+  clerkUserId: String!
+}
+
+input LikePostInput {
+  id: String!
   clerkUserId: String!
 }
 
