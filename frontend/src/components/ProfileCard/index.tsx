@@ -7,6 +7,7 @@ import {
   CardBody,
   CardFooter,
 } from "@nextui-org/react";
+import { color } from "framer-motion";
 import React from "react";
 
 interface ProfileCardProps {
@@ -15,6 +16,7 @@ interface ProfileCardProps {
   image: string;
   username: string | null;
   createAt: Date;
+  loading: boolean;
 }
 
 const ProfileCard = ({
@@ -23,6 +25,7 @@ const ProfileCard = ({
   email,
   image,
   username,
+  loading,
 }: ProfileCardProps) => {
   const [isFollowed, setIsFollowed] = React.useState(false);
 
@@ -30,13 +33,18 @@ const ProfileCard = ({
     <Card className="max-w-96 max-h-96 h-64 ">
       <CardHeader className="justify-between">
         <div className="flex gap-5">
-          <Avatar isBordered radius="full" size="md" src={image} />
+          <Avatar
+            isBordered
+            radius="full"
+            size="md"
+            src="https://avatars.githubusercontent.com/u/45522944?v=4"
+          />
           <div className="flex flex-col gap-1 items-start justify-center">
             <h4 className="text-small font-semibold leading-none text-default-600">
-              {email}
+              7ipolito2003@gmail.com
             </h4>
             <h5 className="text-small tracking-tight text-default-400">
-              {username}
+              ADMIN
             </h5>
           </div>
         </div>
@@ -50,17 +58,17 @@ const ProfileCard = ({
           radius="full"
           size="sm"
           variant={isFollowed ? "bordered" : "solid"}
-          onPress={() => setIsFollowed(!isFollowed)}
+          onPress={() => (window.location.href = "https://github.com/7ipolito")}
         >
-          {isFollowed ? "Cancel Edit" : "Edit"}
+          Github
         </Button>
       </CardHeader>
       <CardBody className="px-3 py-0 text-small text-default-400">
         <p>
-          Frontend developer and UI/UX enthusiast. Join me on this coding
-          adventure!
+          👨🏽‍💻FullStack Enginner ⚙️ Owner of Gallery Youtube and Building
+          @socialmediagraphql and other private projects.
         </p>
-        <span className="pt-2">@{username}</span>
+        <span className="pt-2">My github is @7ipolito follow me!</span>
       </CardBody>
       {/* <CardFooter className="gap-3">
         <div className="flex gap-1">

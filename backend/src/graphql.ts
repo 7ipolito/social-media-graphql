@@ -17,6 +17,11 @@ export interface CreatePostInput {
     clerkUserId: string;
 }
 
+export interface LikePostInput {
+    id: string;
+    clerkUserId: string;
+}
+
 export interface RegisterInput {
     clerkUserId: string;
     username: string;
@@ -45,10 +50,18 @@ export interface DeleteResponse {
 export interface Post {
     id: string;
     body: string;
+    countLikes: number;
     createdAt: string;
+    user: User;
+    likes?: Nullable<User[]>;
 }
 
 export interface ErrorTypeCreatePost {
+    path: string;
+    message: string;
+}
+
+export interface ErrorTypeLikePost {
     path: string;
     message: string;
 }
@@ -70,6 +83,7 @@ export interface IQuery {
 export interface IMutation {
     deleteUser(deleteInput: DeleteInput): DeleteResponse | Promise<DeleteResponse>;
     createPost(createPostInput: CreatePostInput): Post | Promise<Post>;
+    likePost(likePostInput: LikePostInput): Post | Promise<Post>;
     register(registerInput: RegisterInput): RegisterResponse | Promise<RegisterResponse>;
 }
 

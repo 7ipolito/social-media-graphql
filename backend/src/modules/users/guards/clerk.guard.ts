@@ -25,6 +25,7 @@ export class ClerkGuard implements CanActivate {
         authorizedParties: [
           'http://localhost:3000',
           'https://social-media-graphql-eight.vercel.app',
+          'http://192.168.0.100:3000',
         ],
       });
 

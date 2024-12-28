@@ -6,7 +6,7 @@ import { Post } from 'src/modules/posts/entities/post.entity';
 @ObjectType()
 @Schema({ timestamps: true })
 export class User {
-  @Field(() => ID)
+  @Field(() => String)
   _id: MongooSchema.Types.ObjectId;
 
   @Field(() => String)
