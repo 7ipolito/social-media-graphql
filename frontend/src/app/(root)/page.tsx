@@ -52,7 +52,9 @@ export default function Dashboard() {
                   image={post.user.image}
                   body={post.body}
                   clerkUserId={post.user.clerkUserId}
-                  hasLiked={post.likes.some((like) => like._id === data?._id)}
+                  hasLiked={post.likes.some(
+                    (like) => like.clerkUserId === data?._id
+                  )}
                 />
               ))
             ) : (

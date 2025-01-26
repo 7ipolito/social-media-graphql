@@ -51,10 +51,11 @@ const PostCard = ({
   image,
   clerkUserId,
   username,
-  hasLiked,
+  hasLiked = false,
 }: PostCardProps) => {
   const relativeTimeAgo = dayjs(createdAt).fromNow();
 
+  const [isLiked, setIsLiked] = useState(hasLiked);
   const [likePost, { loading, error }] = useMutation(LIKE_POST, {
     refetchQueries: [{ query: GET_POSTS }],
   });
@@ -65,6 +66,7 @@ const PostCard = ({
         likePostInput: { id: id, clerkUserId: clerkUserId },
       },
     });
+    setIsLiked(true);
   };
 
   return (
@@ -87,9 +89,9 @@ const PostCard = ({
         <div className="flex items-center justify-between w-full">
           <button
             className={`flex items-center gap-2 ${
-              hasLiked ? "text-primary" : "text-gray-600"
+              isLiked ? "text-primary" : "text-gray-600"
             } hover:text-primary`}
-            onClick={!hasLiked ? handleLike : undefined}
+            onClick={!isLiked ? handleLike : undefined}
           >
             <FaThumbsUp />
             <span>{countLikes}</span>
