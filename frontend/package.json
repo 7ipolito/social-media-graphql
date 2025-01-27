@@ -11,6 +11,7 @@
   "dependencies": {
     "@apollo/client": "^3.11.4",
     "@clerk/nextjs": "^5.7.1",
+    "@heroui/tooltip": "^2.2.8",
     "@nextui-org/card": "^2.2.7",
     "@nextui-org/navbar": "^2.2.5",
     "@nextui-org/react": "^2.6.8",
