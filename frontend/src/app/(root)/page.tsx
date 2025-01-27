@@ -20,11 +20,18 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (posts && posts.posts) {
-      console.log(posts.posts);
-
       setPostsData(posts.posts);
     }
-  }, [posts]);
+  }, [data?._id, posts]);
+
+  useEffect(() => {
+    if (data._id) {
+      localStorage.setItem("clerkUserId", data._id);
+    }
+  }, [data._id]);
+
+  const savedUserId =
+    typeof window !== "undefined" ? localStorage.getItem("clerkUserId") : null;
 
   return (
     <div className="flex flex-1 w-full">
@@ -40,7 +47,7 @@ export default function Dashboard() {
           </div>
 
           <div className="order-2 lg:order-3 flex flex-wrap gap-4 p-8">
-            {!loading && postsData?.length > 0 ? (
+            {!loading && postsData?.length > 0 && savedUserId ? (
               postsData.map((post, idx) => (
                 <PostCard
                   key={idx}
@@ -52,9 +59,7 @@ export default function Dashboard() {
                   image={post.user.image}
                   body={post.body}
                   clerkUserId={post.user.clerkUserId}
-                  hasLiked={post.likes.some(
-                    (like) => like.clerkUserId === data?._id
-                  )}
+                  hasLiked={post.likes.some((like) => like._id === savedUserId)}
                 />
               ))
             ) : (
