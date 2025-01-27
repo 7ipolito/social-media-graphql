@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { UserButton } from "@clerk/nextjs";
+import { SignOutButton, useAuth, UserButton } from "@clerk/nextjs";
 import {
   Navbar,
   NavbarBrand,
@@ -9,9 +9,12 @@ import {
 } from "@nextui-org/react";
 import Link from "next/link";
 import Image from "next/image";
+import { IoLogOutOutline } from "react-icons/io5";
+import { Tooltip } from "@heroui/tooltip";
 
 const NavBar = () => {
   const [isUserButtonVisible, setUserButtonVisible] = useState(false);
+  const { signOut } = useAuth();
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -69,7 +72,20 @@ const NavBar = () => {
             isUserButtonVisible ? "opacity-100" : "opacity-0 translate-y-4"
           } transition-all duration-500 ease-out`}
         >
-          <UserButton />
+          <div className="flex flex-row text-white justify-center items-center">
+            <div className="pr-2">
+              <UserButton />
+            </div>
+            <Tooltip content="End session" showArrow={true}>
+              <NavbarItem className="transition-all duration-300 transform hover:scale-105 hover:text-primary cursor-pointer">
+                <button onClick={() => signOut()}>
+                  <SignOutButton redirectUrl="/">
+                    <IoLogOutOutline color="#D72638" size={35} />
+                  </SignOutButton>
+                </button>
+              </NavbarItem>
+            </Tooltip>
+          </div>
         </div>
       </NavbarContent>
     </Navbar>
