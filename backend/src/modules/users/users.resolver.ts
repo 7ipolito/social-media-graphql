@@ -4,15 +4,15 @@ import { User } from './users.schema';
 import { UserService } from './users.service';
 import { UseGuards } from '@nestjs/common';
 import { DeleteInput, DeleteResponse } from './dtos/delete-user.dto';
+import { WhoamiInput } from './dtos/whoami.dto';
 
 @Resolver(() => User)
 export class UserResolver {
   constructor(private readonly usersService: UserService) {}
 
   @Query(() => User)
-  @UseGuards(ClerkGuard)
-  async whoami(@Context() context: any): Promise<User> {
-    const userId = context.userId;
+  async whoami(@Args('whoamiInput') whoamiInput: WhoamiInput): Promise<User> {
+    const userId = whoamiInput.userId;
 
     if (!userId) {
       throw new Error('User ID not found in context');

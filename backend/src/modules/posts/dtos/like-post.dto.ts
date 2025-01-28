@@ -5,10 +5,10 @@ import { Post } from '../entities/post.entity';
 @InputType()
 export class LikePostInput {
   @Field()
-  id: string;
+  postId: string;
 
   @Field()
-  clerkUserId: string;
+  userId: string;
 }
 
 @ObjectType()

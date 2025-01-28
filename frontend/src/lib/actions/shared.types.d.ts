@@ -18,12 +18,6 @@ export interface GetUserParams {
   createAt: Date;
 }
 
-interface Likes {
-  _id: string;
-  email: string;
-  clerkUserId: string;
-}
-
 interface User {
   _id: string;
   email: string;
@@ -35,7 +29,7 @@ interface User {
 export interface GetPostParams {
   id: string;
   countLikes: number;
-  likes: Likes[];
+  likes: User[];
   user: User;
   body: string;
   createdAt: Date;

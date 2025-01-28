@@ -62,7 +62,7 @@ const PostCard = ({
   const handleLike = async () => {
     await likePost({
       variables: {
-        likePostInput: { id: id, clerkUserId: clerkUserId },
+        likePostInput: { postId: id, userId: clerkUserId },
       },
     });
   };
