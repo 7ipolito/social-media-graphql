@@ -44,20 +44,21 @@ export async function deleteUser(deleteUserData: DeleteUserParams) {
   }
 }
 
-export async function getUserData(
-  token: string | null
-): Promise<GetUserParams> {
+export async function getUserData(userId: string): Promise<GetUserParams> {
   try {
+    console.log(userId);
+
     const response = await client.query({
       query: GET_WHOAMI,
-      context: {
-        headers: {
-          authorization: token ? `Bearer ${token}` : "",
-        },
+      variables: {
+        userId: userId,
       },
     });
+    console.log(response.data.whoami);
     return response.data.whoami;
   } catch (error) {
+    console.log(userId);
+
     console.error("Erro ao buscar dados do usuário:", error);
     throw new Error("Não foi possível buscar os dados do usuário.");
   }

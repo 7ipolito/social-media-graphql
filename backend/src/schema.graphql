@@ -54,8 +54,12 @@ type RegisterResponse {
 }
 
 type Query {
-  whoami: User!
+  whoami(whoamiInput: WhoamiInput!): User!
   posts: [Post!]!
+}
+
+input WhoamiInput {
+  userId: String!
 }
 
 type Mutation {
@@ -75,8 +79,8 @@ input CreatePostInput {
 }
 
 input LikePostInput {
-  id: String!
-  clerkUserId: String!
+  postId: String!
+  userId: String!
 }
 
 input RegisterInput {

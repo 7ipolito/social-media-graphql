@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
 export const GET_WHOAMI = gql`
-  query {
-    whoami {
+  query ($userId: String!) {
+    whoami(whoamiInput: { userId: $userId }) {
       _id
       clerkUserId
       email
@@ -20,7 +20,6 @@ export const GET_POSTS = gql`
       body
       likes {
         email
-        _id
       }
       user {
         clerkUserId

@@ -8,6 +8,10 @@
 /* tslint:disable */
 /* eslint-disable */
 
+export interface WhoamiInput {
+    userId: string;
+}
+
 export interface DeleteInput {
     id: string;
 }
@@ -18,8 +22,8 @@ export interface CreatePostInput {
 }
 
 export interface LikePostInput {
-    id: string;
-    clerkUserId: string;
+    postId: string;
+    userId: string;
 }
 
 export interface RegisterInput {
@@ -76,7 +80,7 @@ export interface RegisterResponse {
 }
 
 export interface IQuery {
-    whoami(): User | Promise<User>;
+    whoami(whoamiInput: WhoamiInput): User | Promise<User>;
     posts(): Post[] | Promise<Post[]>;
 }
 

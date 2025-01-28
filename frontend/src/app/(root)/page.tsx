@@ -51,7 +51,7 @@ export default function Dashboard() {
           </div>
 
           <div className="order-2 lg:order-3 flex flex-wrap gap-4 p-8">
-            {!loading && postsData?.length > 0 && savedUserId ? (
+            {!loading && postsData?.length > 0 ? (
               postsData.map((post, idx) => (
                 <PostCard
                   key={idx}
@@ -62,8 +62,8 @@ export default function Dashboard() {
                   countComments={0}
                   image={post.user.image}
                   body={post.body}
-                  clerkUserId={post.user.clerkUserId}
-                  hasLiked={post.likes.some((like) => like._id == savedUserId)}
+                  clerkUserId={data.clerkUserId}
+                  hasLiked={post.likes.some((like) => like.email == data.email)}
                 />
               ))
             ) : (

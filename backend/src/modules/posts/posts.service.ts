@@ -34,21 +34,20 @@ export class PostService {
   }
 
   async likePost(likePost: LikePostInput): Promise<Post> {
-    const post = await this.postModel.findById(likePost.id);
+    const post = await this.postModel.findById(likePost.postId);
     if (!post) {
       throw new Error('Post não encontrado');
     }
 
     const user = await this.userModel.findOne({
-      clerkUserId: likePost.clerkUserId,
+      clerkUserId: likePost.userId,
     });
     if (!user) {
       throw new Error('Usuário não encontrado');
     }
 
     const hasLiked = post.likes.some((like) => {
-      console.log(like);
-      console.log(user._id);
+      like == user._id;
     });
     if (hasLiked) {
       throw new Error('Você já curtiu este post.');
