@@ -4,7 +4,7 @@ import { useAuth } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
 
 export const useGetUser = () => {
-  const { getToken, isLoaded } = useAuth();
+  const { getToken, isLoaded, signOut } = useAuth();
   const [data, setData] = useState<GetUserParams>({} as GetUserParams);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -18,9 +18,11 @@ export const useGetUser = () => {
           const userData = await getUserData(fetchedToken);
           setData(userData);
         } else {
+          signOut()
           setError("Token não encontrado.");
         }
       } catch (err) {
+        signOut()
         setError(err instanceof Error ? err.message : "Erro desconhecido.");
       } finally {
         setLoading(false);
@@ -28,7 +30,7 @@ export const useGetUser = () => {
     };
 
     fetchUserData();
-  }, [getToken, isLoaded]);
+  }, [getToken, isLoaded, signOut]);
 
   return { data, loading, error };
 };

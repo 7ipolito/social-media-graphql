@@ -15,14 +15,18 @@ import LoadingCreatePostCard from "@/components/CreatePostCard/loading";
 
 export default function Dashboard() {
   const [postsData, setPostsData] = useState<GetPostParams[]>([]);
-  const { data, loading: loadingData } = useGetUser();
-  const { data: posts, loading, error } = useQuery(GET_POSTS);
+  const { data, loading: loadingData, error } = useGetUser();
+  const { data: posts, loading } = useQuery(GET_POSTS);
 
   useEffect(() => {
     if (posts && posts.posts) {
       setPostsData(posts.posts);
     }
   }, [data?._id, posts]);
+
+  useEffect(() => {
+    console.log(error);
+  }, [error]);
 
   useEffect(() => {
     if (data._id) {
