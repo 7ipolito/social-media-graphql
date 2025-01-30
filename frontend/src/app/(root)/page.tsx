@@ -70,6 +70,7 @@ export default function Dashboard() {
                   body={post.body}
                   clerkUserId={data.clerkUserId}
                   hasLiked={post.likes.some((like) => like.email == data.email)}
+                  notLogged={isNotLogged}
                 />
               ))
             ) : (
