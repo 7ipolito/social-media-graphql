@@ -17,6 +17,7 @@ export default function Dashboard() {
   const [postsData, setPostsData] = useState<GetPostParams[]>([]);
   const { data, loading: loadingData, error } = useGetUser();
   const { data: posts, loading } = useQuery(GET_POSTS);
+  const [isNotLogged, setIsNotLogged] = useState(false);
 
   useEffect(() => {
     if (posts && posts.posts) {
@@ -25,7 +26,11 @@ export default function Dashboard() {
   }, [data?._id, posts]);
 
   useEffect(() => {
-    console.log(error);
+    if (error == null) {
+      setTimeout(() => {
+        setIsNotLogged(true);
+      }, 3000);
+    }
   }, [error]);
 
   useEffect(() => {
@@ -47,6 +52,7 @@ export default function Dashboard() {
               clerkUserId={data?.clerkUserId}
               image={data?.image}
               loading={loadingData}
+              notLogged={isNotLogged}
             />
           </div>
 

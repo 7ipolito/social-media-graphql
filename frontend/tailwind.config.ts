@@ -14,6 +14,7 @@ const config: Config = {
       colors: {
         primary: "#3D2C8D", // Cor de fundo primária
         navbarColor: "#1C0C5B", // Cor de fundo secundária
+        blockedPostColor: "#120639",
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",

@@ -11,10 +11,14 @@ import Link from "next/link";
 import Image from "next/image";
 import { IoLogOutOutline } from "react-icons/io5";
 import { Tooltip } from "@heroui/tooltip";
+import { Fingerprint, UserRoundPlus } from "lucide-react";
+import { LogIn } from "lucide-react";
+import { useRouter } from "next/navigation"; // Importando o hook useRouter
 
 const NavBar = () => {
   const [isUserButtonVisible, setUserButtonVisible] = useState(false);
-  const { signOut } = useAuth();
+  const { signOut, userId } = useAuth();
+  const router = useRouter();
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -23,6 +27,13 @@ const NavBar = () => {
 
     return () => clearTimeout(timeout);
   }, []);
+
+  const handleSignOut = () => {
+    signOut();
+
+    window.location.href =
+      "https://social-media-graphql-eight.vercel.app//sign-in";
+  };
 
   return (
     <Navbar
@@ -76,15 +87,27 @@ const NavBar = () => {
             <div className="pr-2">
               <UserButton />
             </div>
-            <Tooltip content="End session" showArrow={true}>
-              <NavbarItem className="transition-all duration-300 transform hover:scale-105 hover:text-primary cursor-pointer">
-                <button onClick={() => signOut()}>
-                  <SignOutButton redirectUrl="/">
-                    <IoLogOutOutline color="#D72638" size={35} />
-                  </SignOutButton>
-                </button>
-              </NavbarItem>
-            </Tooltip>
+            {userId ? (
+              <Tooltip content="End session" showArrow={true}>
+                <NavbarItem className="transition-all duration-300 transform hover:scale-105 hover:text-primary cursor-pointer">
+                  <button onClick={handleSignOut}>
+                    <SignOutButton redirectUrl="/">
+                      <IoLogOutOutline color="#D72638" size={35} />
+                    </SignOutButton>
+                  </button>
+                </NavbarItem>
+              </Tooltip>
+            ) : (
+              <>
+                <Tooltip content="Login" showArrow={true}>
+                  <NavbarItem className="transition-all duration-300 transform hover:scale-105 hover:text-primary cursor-pointer">
+                    <Link href="/sign-in">
+                      <LogIn color="white" size={35} />
+                    </Link>
+                  </NavbarItem>
+                </Tooltip>
+              </>
+            )}
           </div>
         </div>
       </NavbarContent>
