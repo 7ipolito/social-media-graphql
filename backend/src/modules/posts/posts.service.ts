@@ -1,16 +1,19 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Post, PostDocument } from './entities/post.entity';
 import { User, UserDocument } from 'src/modules/users/entities/user.entity';
 import { CreatePostInput } from './dtos/create-post.dto';
 import { LikePostInput } from './dtos/like-post.dto';
+import { PubSub } from 'graphql-subscriptions';
+import { AddCommentInput } from './dtos/add-comment-input.dto';
 
 @Injectable()
 export class PostService {
   constructor(
     @InjectModel(Post.name) private postModel: Model<PostDocument>,
     @InjectModel(User.name) private userModel: Model<UserDocument>,
+    @Inject('PUB_SUB') private readonly pubSub: PubSub,
   ) {}
 
   async create(createPostDto: CreatePostInput): Promise<Post> {
@@ -59,5 +62,28 @@ export class PostService {
     await post.save();
 
     return this.postModel.findById(post._id).populate('likes');
+  }
+
+  async addComment(addCommentInput: AddCommentInput): Promise<Post> {
+    const post = await this.postModel.findById(addCommentInput.postId);
+    if (!post) {
+      throw new Error('Post not found');
+    }
+
+    const user = await this.userModel.findOne({
+      clerkUserId: addCommentInput.userId,
+    });
+
+    post.comments.push({
+      user: user._id,
+      text: addCommentInput.text,
+      createdAt: new Date(),
+    });
+
+    const updatedPost = await post.save();
+
+    await this.pubSub.publish('commentAdded', { commentAdded: updatedPost });
+
+    return updatedPost;
   }
 }

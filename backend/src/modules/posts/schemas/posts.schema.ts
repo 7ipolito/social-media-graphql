@@ -1,5 +1,6 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
-import { User } from '../users/users.schema';
+import { User } from '../../users/users.schema';
+import { Comment } from './comments.schema';
 
 @ObjectType()
 export class Post {
@@ -20,4 +21,7 @@ export class Post {
 
   @Field(() => [User], { nullable: true })
   likes: User[];
+
+  @Field(() => [Comment], { nullable: true })
+  comments: Comment[];
 }

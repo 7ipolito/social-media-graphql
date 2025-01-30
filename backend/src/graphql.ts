@@ -26,6 +26,12 @@ export interface LikePostInput {
     userId: string;
 }
 
+export interface AddCommentInput {
+    postId: string;
+    userId: string;
+    text: string;
+}
+
 export interface RegisterInput {
     clerkUserId: string;
     username: string;
@@ -39,6 +45,12 @@ export interface User {
     username: string;
     image: string;
     email: string;
+    createdAt: DateTime;
+}
+
+export interface Comment {
+    text: string;
+    user: User;
     createdAt: DateTime;
 }
 
@@ -58,6 +70,7 @@ export interface Post {
     createdAt: string;
     user: User;
     likes?: Nullable<User[]>;
+    comments?: Nullable<Comment[]>;
 }
 
 export interface ErrorTypeCreatePost {
@@ -88,7 +101,12 @@ export interface IMutation {
     deleteUser(deleteInput: DeleteInput): DeleteResponse | Promise<DeleteResponse>;
     createPost(createPostInput: CreatePostInput): Post | Promise<Post>;
     likePost(likePostInput: LikePostInput): Post | Promise<Post>;
+    addComment(addCommentInput: AddCommentInput): Post | Promise<Post>;
     register(registerInput: RegisterInput): RegisterResponse | Promise<RegisterResponse>;
+}
+
+export interface ISubscription {
+    commentAdded(postId: string): Post | Promise<Post>;
 }
 
 export type DateTime = any;

@@ -35,12 +35,13 @@ import { RegisterModule } from './modules/register/register.module';
     }),
     GraphQLModule.forRoot({
       driver: ApolloDriver,
-      playground: false,
+      playground: true,
+      installSubscriptionHandlers: true,
       autoSchemaFile: join(process.cwd(), 'src/schema.graphql'),
       definitions: {
         path: join(process.cwd(), 'src/graphql.ts'),
       },
-      plugins: [ApolloServerPluginLandingPageLocalDefault()],
+      // plugins: [ApolloServerPluginLandingPageLocalDefault()],
       context: ({ req, authorization }) => {
         return {
           req,

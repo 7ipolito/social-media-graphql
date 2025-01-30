@@ -16,6 +16,12 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type Comment {
+  text: String!
+  user: User!
+  createdAt: DateTime!
+}
+
 type ErrorTypeDelete {
   path: String!
   message: String!
@@ -32,6 +38,7 @@ type Post {
   createdAt: String!
   user: User!
   likes: [User!]
+  comments: [Comment!]
 }
 
 type ErrorTypeCreatePost {
@@ -66,6 +73,7 @@ type Mutation {
   deleteUser(deleteInput: DeleteInput!): DeleteResponse!
   createPost(createPostInput: CreatePostInput!): Post!
   likePost(likePostInput: LikePostInput!): Post!
+  addComment(addCommentInput: AddCommentInput!): Post!
   register(registerInput: RegisterInput!): RegisterResponse!
 }
 
@@ -83,9 +91,19 @@ input LikePostInput {
   userId: String!
 }
 
+input AddCommentInput {
+  postId: String!
+  userId: String!
+  text: String!
+}
+
 input RegisterInput {
   clerkUserId: String!
   username: String!
   image: String
   email: String!
+}
+
+type Subscription {
+  commentAdded(postId: String!): Post!
 }
