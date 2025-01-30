@@ -15,7 +15,10 @@ export const useGetUser = () => {
         setLoading(true);
         const userData = await getUserData(userId!);
         setData(userData);
+        setLoading(false);
       } catch (err) {
+        console.log(err);
+        setLoading(false);
         setError(err instanceof Error ? err.message : "Erro desconhecido.");
       } finally {
         setLoading(false);

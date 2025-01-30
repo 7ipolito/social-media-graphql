@@ -14,11 +14,14 @@ import { CREATE_POST } from "@/graphql/mutations";
 import { GET_POSTS } from "@/graphql/queries";
 import client from "@/lib/client";
 import LoadingCreatePostCard from "./loading";
+import BlockedPostCard from "../BlockedPostCard";
+import { useAuth } from "@clerk/nextjs";
 
 interface CreatePostCard {
   clerkUserId: string;
   image: string;
   loading: boolean;
+  notLogged: boolean;
 }
 
 const Picker = dynamic(
@@ -28,7 +31,12 @@ const Picker = dynamic(
   { ssr: false }
 );
 
-const CreatePostCard = ({ clerkUserId, image, loading }: CreatePostCard) => {
+const CreatePostCard = ({
+  clerkUserId,
+  image,
+  loading,
+  notLogged,
+}: CreatePostCard) => {
   const [textPost, setTextPost] = useState("");
   const [value, setValue] = useState(0);
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
@@ -138,8 +146,10 @@ const CreatePostCard = ({ clerkUserId, image, loading }: CreatePostCard) => {
         </>
       )}
     </Card>
-  ) : (
+  ) : !notLogged ? (
     <LoadingCreatePostCard />
+  ) : (
+    notLogged && <BlockedPostCard />
   );
 };
 

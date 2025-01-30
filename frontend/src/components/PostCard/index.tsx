@@ -7,6 +7,7 @@ import {
   Textarea,
   Progress,
   CardFooter,
+  Tooltip,
 } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
@@ -33,6 +34,7 @@ export interface PostCardProps {
   clerkUserId: string;
   hasLiked: boolean;
   body: string;
+  notLogged: boolean;
 }
 
 const Picker = dynamic(
@@ -52,6 +54,7 @@ const PostCard = ({
   clerkUserId,
   username,
   hasLiked,
+  notLogged,
 }: PostCardProps) => {
   const relativeTimeAgo = dayjs(createdAt).fromNow();
 
@@ -86,6 +89,7 @@ const PostCard = ({
       <CardFooter>
         <div className="flex items-center justify-between w-full">
           <button
+            disabled={!clerkUserId}
             className={`flex items-center gap-2 ${
               hasLiked ? "text-primary" : "text-gray-600"
             } hover:text-primary`}
