@@ -65,7 +65,7 @@ export default function Dashboard() {
                   username={post.user.username}
                   createdAt={post.createdAt}
                   countLikes={post.countLikes}
-                  countComments={0}
+                  countComments={post.countComments}
                   image={post.user.image}
                   body={post.body}
                   clerkUserId={data.clerkUserId}

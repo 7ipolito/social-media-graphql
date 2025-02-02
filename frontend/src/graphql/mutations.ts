@@ -68,3 +68,13 @@ export const LIKE_POST = gql`
     }
   }
 `;
+
+export const ADD_COMMENT = gql`
+  mutation AddComment($addCommentInput: AddCommentInput!) {
+    addComment(addCommentInput: $addCommentInput) {
+      comments {
+        text
+      }
+    }
+  }
+`;

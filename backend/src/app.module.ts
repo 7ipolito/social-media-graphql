@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver } from '@nestjs/apollo';
 import { join } from 'path';
-import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 import { MongooseModule, MongooseModuleOptions } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UsersModule } from './modules/users/users.module';
@@ -35,12 +34,13 @@ import { RegisterModule } from './modules/register/register.module';
     }),
     GraphQLModule.forRoot({
       driver: ApolloDriver,
-      playground: false,
+      playground: true,
+      installSubscriptionHandlers: true,
       autoSchemaFile: join(process.cwd(), 'src/schema.graphql'),
       definitions: {
         path: join(process.cwd(), 'src/graphql.ts'),
       },
-      plugins: [ApolloServerPluginLandingPageLocalDefault()],
+      // plugins: [ApolloServerPluginLandingPageLocalDefault()],
       context: ({ req, authorization }) => {
         return {
           req,

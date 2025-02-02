@@ -1,7 +1,8 @@
 import { Field } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Schema as MongooSchema } from 'mongoose';
-import { User } from 'src/modules/users/entities/user.entity';
+import { User } from 'src/modules/users/users.schema';
+import { Comment } from '../schemas/comments.schema';
 
 @Schema({ timestamps: true })
 export class Post extends Document {
@@ -17,6 +18,10 @@ export class Post extends Document {
   countLikes: number;
 
   @Field()
+  @Prop({ default: 0 })
+  countComments: number;
+
+  @Field()
   @Prop()
   createdAt: Date;
 
@@ -30,6 +35,23 @@ export class Post extends Document {
     default: [],
   })
   likes: MongooSchema.Types.ObjectId[];
+
+  @Field(() => [Comment], { nullable: true })
+  @Prop({
+    type: [
+      {
+        user: { type: MongooSchema.Types.ObjectId, ref: 'User' },
+        text: { type: String, required: true },
+        createdAt: { type: Date, default: Date.now },
+      },
+    ],
+    default: [],
+  })
+  comments: {
+    user: MongooSchema.Types.ObjectId;
+    text: string;
+    createdAt: Date;
+  }[];
 }
 
 export type PostDocument = Post & Document;

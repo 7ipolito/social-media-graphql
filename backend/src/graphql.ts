@@ -26,6 +26,12 @@ export interface LikePostInput {
     userId: string;
 }
 
+export interface AddCommentInput {
+    postId: string;
+    userId: string;
+    text: string;
+}
+
 export interface RegisterInput {
     clerkUserId: string;
     username: string;
@@ -42,6 +48,12 @@ export interface User {
     createdAt: DateTime;
 }
 
+export interface Comment {
+    text: string;
+    user: User;
+    createdAt: DateTime;
+}
+
 export interface ErrorTypeDelete {
     path: string;
     message: string;
@@ -55,9 +67,11 @@ export interface Post {
     id: string;
     body: string;
     countLikes: number;
+    countComments: number;
     createdAt: string;
     user: User;
     likes?: Nullable<User[]>;
+    comments?: Nullable<Comment[]>;
 }
 
 export interface ErrorTypeCreatePost {
@@ -82,13 +96,19 @@ export interface RegisterResponse {
 export interface IQuery {
     whoami(whoamiInput: WhoamiInput): User | Promise<User>;
     posts(): Post[] | Promise<Post[]>;
+    getAllComments(postId: string): Comment[] | Promise<Comment[]>;
 }
 
 export interface IMutation {
     deleteUser(deleteInput: DeleteInput): DeleteResponse | Promise<DeleteResponse>;
     createPost(createPostInput: CreatePostInput): Post | Promise<Post>;
     likePost(likePostInput: LikePostInput): Post | Promise<Post>;
+    addComment(addCommentInput: AddCommentInput): Post | Promise<Post>;
     register(registerInput: RegisterInput): RegisterResponse | Promise<RegisterResponse>;
+}
+
+export interface ISubscription {
+    commentAdded(postId: string): Post | Promise<Post>;
 }
 
 export type DateTime = any;
