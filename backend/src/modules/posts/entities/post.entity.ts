@@ -18,6 +18,10 @@ export class Post extends Document {
   countLikes: number;
 
   @Field()
+  @Prop({ default: 0 })
+  countComments: number;
+
+  @Field()
   @Prop()
   createdAt: Date;
 

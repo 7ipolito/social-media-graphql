@@ -6,6 +6,7 @@ import { LikePostInput } from './dtos/like-post.dto';
 import { Inject } from '@nestjs/common';
 import { PubSub } from 'graphql-subscriptions';
 import { AddCommentInput } from './dtos/add-comment-input.dto';
+import { Comment } from './schemas/comments.schema';
 
 @Resolver(() => Post)
 export class PostResolver {
@@ -17,6 +18,11 @@ export class PostResolver {
   @Query(() => [Post], { name: 'posts' })
   findAll() {
     return this.postService.findAll();
+  }
+
+  @Query(() => [Comment])
+  async getAllComments(@Args('postId') postId: string) {
+    return this.postService.findAllComments(postId);
   }
 
   @Mutation(() => Post)
@@ -32,22 +38,25 @@ export class PostResolver {
   @Mutation(() => Post)
   async addComment(@Args('addCommentInput') addCommentDto: AddCommentInput) {
     const updatedPost = await this.postService.addComment(addCommentDto);
-    console.log('Post AtualizadoOIII:', updatedPost);
-    this.pubSub.publish('commentAdded', { commentAdded: updatedPost });
-    console.log('Comentário publicado para a subscription');
+
+    this.pubSub.publish('commentAdded', {
+      commentAdded: {
+        postId: addCommentDto.postId,
+        comments: updatedPost,
+      },
+    });
 
     return updatedPost;
   }
 
   @Subscription(() => Post, {
     filter: (payload, variables) => {
-      console.log('Payload:', payload);
-      console.log('Variables:', variables);
-      return payload.commentAdded._id.toString() == variables.postId;
+      return payload.commentAdded.postId === variables.postId;
     },
     resolve: (payload) => {
-      console.log('Resolved Payload:', payload);
-      return payload.commentAdded;
+      console.log(payload.commentAdded.postId);
+      console.log('Resolved Payload:', payload.commentAdded.comments);
+      return payload.commentAdded.comments.populate('comments.user');
     },
   })
   commentAdded(@Args('postId') postId: string) {

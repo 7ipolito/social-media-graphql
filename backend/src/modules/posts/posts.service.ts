@@ -7,6 +7,7 @@ import { CreatePostInput } from './dtos/create-post.dto';
 import { LikePostInput } from './dtos/like-post.dto';
 import { PubSub } from 'graphql-subscriptions';
 import { AddCommentInput } from './dtos/add-comment-input.dto';
+import { Comment } from './schemas/comments.schema';
 
 @Injectable()
 export class PostService {
@@ -33,7 +34,26 @@ export class PostService {
   }
 
   async findAll(): Promise<Post[]> {
-    return await this.postModel.find().populate('user').populate('likes');
+    return await this.postModel
+      .find()
+      .populate('user')
+      .populate('likes')
+      .populate('comments');
+  }
+
+  async findAllComments(postId: string): Promise<Comment[]> {
+    const post = await this.postModel.findById(postId).populate({
+      path: 'comments',
+      populate: { path: 'user' },
+    });
+
+    if (!post) {
+      throw new Error('Post not found');
+    }
+
+    return post.comments.sort((a, b) => {
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    });
   }
 
   async likePost(likePost: LikePostInput): Promise<Post> {
@@ -74,16 +94,24 @@ export class PostService {
       clerkUserId: addCommentInput.userId,
     });
 
+    console.log(user);
+
     post.comments.push({
       user: user._id,
       text: addCommentInput.text,
       createdAt: new Date(),
     });
 
+    post.countComments += 1;
+
     const updatedPost = await post.save();
 
-    await this.pubSub.publish('commentAdded', { commentAdded: updatedPost });
+    const populatedPost = await this.postModel
+      .findById(updatedPost._id)
+      .populate('comments.user');
 
-    return updatedPost;
+    await this.pubSub.publish('commentAdded', { commentAdded: populatedPost });
+
+    return populatedPost;
   }
 }

@@ -67,6 +67,7 @@ export interface Post {
     id: string;
     body: string;
     countLikes: number;
+    countComments: number;
     createdAt: string;
     user: User;
     likes?: Nullable<User[]>;
@@ -95,6 +96,7 @@ export interface RegisterResponse {
 export interface IQuery {
     whoami(whoamiInput: WhoamiInput): User | Promise<User>;
     posts(): Post[] | Promise<Post[]>;
+    getAllComments(postId: string): Comment[] | Promise<Comment[]>;
 }
 
 export interface IMutation {

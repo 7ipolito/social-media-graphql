@@ -13,6 +13,9 @@ export class Post {
   @Field({ defaultValue: 0 })
   countLikes: number;
 
+  @Field({ defaultValue: 0 })
+  countComments: number;
+
   @Field()
   createdAt: string;
 

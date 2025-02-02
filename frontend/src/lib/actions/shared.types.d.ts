@@ -29,6 +29,7 @@ interface User {
 export interface GetPostParams {
   id: string;
   countLikes: number;
+  countComments: number;
   likes: User[];
   user: User;
   body: string;

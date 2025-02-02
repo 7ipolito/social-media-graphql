@@ -35,6 +35,7 @@ type Post {
   id: ID!
   body: String!
   countLikes: Float!
+  countComments: Float!
   createdAt: String!
   user: User!
   likes: [User!]
@@ -63,6 +64,7 @@ type RegisterResponse {
 type Query {
   whoami(whoamiInput: WhoamiInput!): User!
   posts: [Post!]!
+  getAllComments(postId: String!): [Comment!]!
 }
 
 input WhoamiInput {

@@ -28,6 +28,20 @@ export const GET_POSTS = gql`
         email
       }
       countLikes
+      countComments
+    }
+  }
+`;
+
+export const GET_ALL_COMMENTS = gql`
+  query GetAllComments($postId: String!) {
+    getAllComments(postId: $postId) {
+      text
+      user {
+        username
+        image
+      }
+      createdAt
     }
   }
 `;
